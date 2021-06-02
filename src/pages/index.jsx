@@ -6,10 +6,29 @@ import cookie from 'js-cookie';
 import { NextPage } from 'next';
 import { useState } from 'react';
 import FileBase64 from 'react-file-base64';
+import {
+  Box,
+  makeStyles,
+  Typography,
+  Button,
+  Menu,
+  MenuItem,
+} from '@material-ui/core';
+import Nav from '../components/Nav';
+
+const useStyles = makeStyles((theme) => ({
+  body: {
+    backgroundColor: 'grey',
+    zIndex: '-1',
+  },
+}));
 
 function Home() {
   const [files, setFiles] = useState([]);
   // const [blobUri, setBlobUri] = useState('');
+
+  const classes = useStyles();
+
   const { data, revalidate } = useSWR('/api/me', async function (args) {
     const res = await fetch(args);
     return res.json();
@@ -24,7 +43,7 @@ function Home() {
     setFiles(files);
   };
 
-  console.log(files);
+  // console.log(files);
 
   // const getBase64 = (file) => {
   //   return new Promise((resolve, reject) => {
@@ -45,14 +64,11 @@ function Home() {
   // };
 
   return (
-    <div>
+    <Box height="100vh" width="auto" className={classes.body}>
       <Head>
-        <title>Welcome to landing page</title>
+        <title>Blog</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
-      <h1>Simplest login</h1>
-
-      <img src={files.base64} width="450" alt="" />
 
       {/* <input
         type="file"
@@ -62,9 +78,49 @@ function Home() {
       />
     <img src={dataUri} width="200" height="200" alt="image" /> */}
 
-      <FileBase64 multiple={false} onDone={(e) => getFiles(e)} />
+      {/* <FileBase64 multiple={false} onDone={(e) => getFiles(e)} /> */}
 
-      {loggedIn && (
+      <Nav loggedIn={loggedIn} data={data} revalidate={revalidate} />
+      {/* <Box
+        width="100%"
+        // height="30%"
+        bgcolor="black"
+        display="flex"
+        justifyContent="space-around"
+        alignItems="center"
+      >
+        <Typography color="primary" className={classes.root}>
+          BLOG
+        </Typography>
+        {!loggedIn && (
+          <Box display="flex" flexDirection="row" alignItems="center">
+            <Button
+              variant="outlined"
+              color="primary"
+              className={classes.button}
+            >
+              <Link href="/login" passHref>
+                <a className={classes.button}>LogIn</a>
+              </Link>
+            </Button>
+            <Typography color="primary" className={classes.root}>
+              ou
+            </Typography>
+            <Button
+              color="primary"
+              variant="outlined"
+              className={classes.button}
+            >
+              <Link href="/signup" passHref>
+                <a className={classes.button}>Sign Up</a>
+              </Link>
+            </Button>
+          </Box>
+        )} */}
+
+      {/* </Box> */}
+
+      {/* {loggedIn && (
         <>
           <p>Welcome {data.email}!</p>
           <button
@@ -76,15 +132,15 @@ function Home() {
             Logout
           </button>
         </>
-      )}
-      {!loggedIn && (
+      )} */}
+      {/* {!loggedIn && (
         <>
           <Link href="/login">Login</Link>
           <p>or</p>
           <Link href="/signup">Sign Up</Link>
         </>
-      )}
-    </div>
+      )} */}
+    </Box>
   );
 }
 
