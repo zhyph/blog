@@ -19,7 +19,6 @@ import Nav from '../components/Nav';
 const useStyles = makeStyles((theme) => ({
   body: {
     backgroundColor: 'grey',
-    zIndex: '-1',
   },
 }));
 
