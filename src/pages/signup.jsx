@@ -49,6 +49,7 @@ function SignUp() {
         cpf,
         password,
         name,
+        type: '1',
         // imageBase64: files.base64,
         // profilePictureRef.current.files[0],
       }),
