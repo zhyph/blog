@@ -4,9 +4,10 @@ import useSWR from 'swr';
 import Link from 'next/link';
 import cookie from 'js-cookie';
 import { NextPage } from 'next';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import FileBase64 from 'react-file-base64';
 import Image from 'next/image';
+import ArrowDropDownCircleRoundedIcon from '@material-ui/icons/ArrowDropDownCircleRounded';
 import {
   Box,
   makeStyles,
@@ -17,13 +18,15 @@ import {
   Avatar,
 } from '@material-ui/core';
 import { grey } from '@material-ui/core/colors';
+import { useRouter } from 'next/router';
 
 const useStyles = makeStyles((theme) => ({
   boxMenu: {
     marginBottom: '2px',
   },
   avatar: {
-    margin: theme.spacing(1),
+    // marginBottom: theme.spacing(1),
+    marginLeft: theme.spacing(1),
   },
   whiteButton: {
     fontWeight: '500',
@@ -83,6 +86,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   smallText: {
+    marginLeft: theme.spacing(1),
     fontWeight: '500',
     [theme.breakpoints.down('sm')]: {
       fontSize: '.8rem',
@@ -152,9 +156,24 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Nav({ loggedIn, data, revalidate, base64Img }) {
+export default function Nav({ base64Img, loggedIn, data, revalidate }) {
+  // const router = useRouter();
+  // { loggedIn, data, revalidate, base64Img }
   const [anchorEl, setAnchorEl] = useState(null);
+  const [newData, setNewData] = useState();
   const classes = useStyles();
+
+  // const { data, revalidate } = useSWR('/api/me', async function (args) {
+  //   const res = await fetch(args);
+  //   return res.json();
+  // });
+  // if (!data) return <h1>Loading...</h1>;
+  // let loggedIn = false;
+  // if (data.email) {
+  //   loggedIn = true;
+  //   // const imgB = imgFinder;
+  //   // setBase64Img(imgB);
+  // }
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -164,7 +183,30 @@ export default function Nav({ loggedIn, data, revalidate, base64Img }) {
     setAnchorEl(null);
   };
 
-  console.log(base64Img);
+  const useFilter = () => {
+    const base64Array = base64Img?.map((item) => {
+      if (data.userId === item.userId) {
+        return item;
+      }
+    });
+    // base64Img?.map((item) => {
+    //   if (item.email === data.email) {
+    //     // console.log(item.base64);
+    //     return item.base64;
+    //   }
+    // });
+    const finalFilter = base64Array?.filter((e) => {
+      // console.log(e);
+      return e !== undefined;
+    });
+    return finalFilter ? finalFilter[0] : '';
+  };
+
+  useEffect(() => {
+    setNewData(useFilter());
+  }, [data.email]);
+
+  // console.log(newData);
 
   return (
     <Box
@@ -178,7 +220,9 @@ export default function Nav({ loggedIn, data, revalidate, base64Img }) {
       <Button color="primary" className={classes.pageTitle}>
         <Link href="/" passHref>
           <a className={classes.pageTitle}>
-            <Typography color="primary">BLOG</Typography>
+            <Typography className={classes.pageTitle} color="primary">
+              BLOG
+            </Typography>
           </a>
         </Link>
       </Button>
@@ -220,18 +264,6 @@ export default function Nav({ loggedIn, data, revalidate, base64Img }) {
           alignItems="center"
           marginRight="10%"
         >
-          <Button
-            aria-controls="simple-menu"
-            aria-haspopup="true"
-            color="primary"
-            variant="outlined"
-            onClick={handleClick}
-            className={classes.buttonMenu}
-          >
-            <Typography color="primary" className={classes.smallText}>
-              Welcome {data.email}!
-            </Typography>
-          </Button>
           <Menu
             id="simple-menu"
             anchorEl={anchorEl}
@@ -252,6 +284,7 @@ export default function Nav({ loggedIn, data, revalidate, base64Img }) {
                 </Link>
               </Button>
             </MenuItem>
+
             <MenuItem onClick={handleClose}>
               <Button
                 fullWidth
@@ -267,12 +300,26 @@ export default function Nav({ loggedIn, data, revalidate, base64Img }) {
               </Button>
             </MenuItem>
           </Menu>
-          <Avatar
-            src={base64Img.filter((e) => {
-              return e !== undefined;
-            })}
-            className={classes.avatar}
-          ></Avatar>
+          <Button
+            aria-controls="simple-menu"
+            aria-haspopup="true"
+            color="primary"
+            variant="outlined"
+            onClick={handleClick}
+            className={classes.buttonMenu}
+          >
+            <ArrowDropDownCircleRoundedIcon color="primary" />
+            <Typography color="primary" className={classes.smallText}>
+              Welcome {newData?.name}!
+            </Typography>
+            <Avatar
+              // src={base64Img.filter((e) => {
+              //   return e !== undefined;
+              // })}
+              src={newData?.base64}
+              className={classes.avatar}
+            />
+          </Button>
         </Box>
       )}
     </Box>

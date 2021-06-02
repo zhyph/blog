@@ -13,23 +13,57 @@ import {
   Button,
   Menu,
   MenuItem,
+  Container,
 } from '@material-ui/core';
 import Nav from '../components/Nav';
 import axios from 'axios';
+import NotLogged from '../components/NotLogged';
 
 const useStyles = makeStyles((theme) => ({
   body: {
     backgroundColor: 'grey',
   },
+  notLoggedInContainer: {
+    backgroundColor: 'white',
+    height: '70%',
+    width: '70%',
+    display: 'grid',
+    placeItems: 'center',
+    // paddingTop: '1rem',
+    [theme.breakpoints.down('md')]: {
+      maxHeight: '660px',
+      maxWidth: '960px',
+    },
+    [theme.breakpoints.down('sm')]: {
+      maxHeight: '300px',
+      maxWidth: '600px',
+      // backgroundColor: 'purple',
+    },
+  },
+  notLoggedInBox: {
+    height: '90vh',
+    width: '100%',
+    display: 'grid',
+    placeItems: 'center',
+  },
+  notLoggedInText: {
+    [theme.breakpoints.down('md')]: {
+      fontSize: '1.5rem',
+    },
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '1rem',
+    },
+  },
 }));
 
 function Home({ dados }) {
-  console.log(dados);
+  // console.log(dados);
   // const [files, setFiles] = useState([]);
   // const [base64Img, setBase64Img] = useState();
+  // const [newData, setNewData] = useState();
+  // const [res, setRes] = useState();
 
   const classes = useStyles();
-
   const { data, revalidate } = useSWR('/api/me', async function (args) {
     const res = await fetch(args);
     return res.json();
@@ -38,44 +72,18 @@ function Home({ dados }) {
   let loggedIn = false;
   if (data.email) {
     loggedIn = true;
-    // const imgB = imgFinder;
-    // setBase64Img(imgB);
   }
 
-  // console.log(files);
-
-  // const getBase64 = (file) => {
-  //   return new Promise((resolve, reject) => {
-  //     const reader = new FileReader();
-  //     reader.onload = () => resolve(reader.result);
-  //     reader.onerror = (error) => reject(error);
-  //     reader.readAsDataURL(file);
-  //   });
-  // };
-
-  // const imageUpload = (e) => {
-  //   const file = e.target.files[0];
-  //   getBase64(file).then((base64) => {
-  //     // localStorage['fileBase64'] = base64;
-  //     setDataUri(base64);
-  //     console.debug('file stored', base64);
-  //   });
-  // };
-
   return (
-    <Box height="100vh" width="auto" className={classes.body}>
+    <Box
+      height={!loggedIn ? '100vh' : '100%'}
+      width="auto"
+      className={classes.body}
+    >
       <Head>
         <title>Blog</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
-
-      {/* <input
-        type="file"
-        id="imageFile"
-        name="imageFile"
-        onChange={imageUpload}
-      />
-    <img src={dataUri} width="200" height="200" alt="image" /> */}
 
       {/* <FileBase64 multiple={false} onDone={(e) => getFiles(e)} /> */}
 
@@ -83,13 +91,25 @@ function Home({ dados }) {
         loggedIn={loggedIn}
         data={data}
         revalidate={revalidate}
-        base64Img={dados.map((item) => {
-          if (item.email === data.email) {
-            // console.log(item.base64);
-            return item.base64;
-          }
-        })}
+        base64Img={dados}
       />
+
+      {!loggedIn && (
+        <NotLogged></NotLogged>
+        // <Box className={classes.notLoggedInBox}>
+        //   <Container maxWidth="md" className={classes.notLoggedInContainer}>
+        //     <Typography
+        //       variant="h3"
+        //       color="textPrimary"
+        //       align="center"
+        //       className={classes.notLoggedInText}
+        //     >
+        //       Você precisa fazer Log In ou Sign Up para ver o conteudo
+        //     </Typography>
+        //   </Container>
+        // </Box>
+      )}
+
       {/* <Box
         width="100%"
         // height="30%"
@@ -155,12 +175,12 @@ function Home({ dados }) {
 
 export default Home;
 
-export const getServerSideProps = async (ctx) => {
-  const res = await fetch('http://localhost:3000/api/user');
+// export const getServerSideProps = async (ctx) => {
+//   const res = await fetch('http://localhost:3000/api/user');
 
-  return {
-    props: {
-      dados: await res.json(),
-    },
-  };
-};
+//   return {
+//     props: {
+//       dados: await res.json(),
+//     },
+//   };
+// };
