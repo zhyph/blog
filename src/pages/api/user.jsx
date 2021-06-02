@@ -15,7 +15,7 @@ function findUser(db, email, callback) {
   collection.findOne({ email }, callback);
 }
 
-function createUser(db, email, cpf, password, name, type, callback) {
+function createUser(db, email, cpf, password, name, type, base64, callback) {
   const collection = db.collection('users');
   bcrypt.hash(password, saltRounds, function (err, hash) {
     // Store hash in your password DB.
@@ -27,7 +27,7 @@ function createUser(db, email, cpf, password, name, type, callback) {
         password: hash,
         name,
         type,
-        // imageBase64,
+        base64,
       },
       function (err, userCreated) {
         assert.strictEqual(err, null);
@@ -84,6 +84,7 @@ export default async (req, res) => {
           password,
           name,
           type,
+          base64,
           // imageBase64,
           (creationResult) => {
             if (creationResult.ops.length === 1) {

@@ -6,6 +6,7 @@ import cookie from 'js-cookie';
 import { NextPage } from 'next';
 import { useState } from 'react';
 import FileBase64 from 'react-file-base64';
+import Image from 'next/image';
 import {
   Box,
   makeStyles,
@@ -13,10 +14,17 @@ import {
   Button,
   Menu,
   MenuItem,
+  Avatar,
 } from '@material-ui/core';
 import { grey } from '@material-ui/core/colors';
 
 const useStyles = makeStyles((theme) => ({
+  boxMenu: {
+    marginBottom: '2px',
+  },
+  avatar: {
+    margin: theme.spacing(1),
+  },
   whiteButton: {
     fontWeight: '500',
     margin: '5px',
@@ -73,10 +81,6 @@ const useStyles = makeStyles((theme) => ({
       fontSize: '1.3rem',
       // backgroundColor: 'green',
     },
-    '&:hover': {
-      backgroundColor: grey[900],
-      border: '.5px solid white',
-    },
   },
   smallText: {
     fontWeight: '500',
@@ -110,6 +114,7 @@ const useStyles = makeStyles((theme) => ({
   pageTitle: {
     marginLeft: '10%',
     fontWeight: '500',
+    textDecoration: 'none',
     // variant: 'h2',
     [theme.breakpoints.down('sm')]: {
       fontSize: '1rem',
@@ -147,7 +152,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Nav({ loggedIn, data, revalidate }) {
+export default function Nav({ loggedIn, data, revalidate, base64Img }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const classes = useStyles();
 
@@ -159,6 +164,8 @@ export default function Nav({ loggedIn, data, revalidate }) {
     setAnchorEl(null);
   };
 
+  console.log(base64Img);
+
   return (
     <Box
       width="100%"
@@ -168,11 +175,21 @@ export default function Nav({ loggedIn, data, revalidate }) {
       justifyContent="space-between"
       alignItems="center"
     >
-      <Typography color="primary" className={classes.pageTitle}>
-        BLOG
-      </Typography>
+      <Button color="primary" className={classes.pageTitle}>
+        <Link href="/" passHref>
+          <a className={classes.pageTitle}>
+            <Typography color="primary">BLOG</Typography>
+          </a>
+        </Link>
+      </Button>
+
       {!loggedIn && (
-        <Box display="flex" flexDirection="row" alignItems="center">
+        <Box
+          display="flex"
+          flexDirection="row"
+          alignItems="center"
+          className={classes.accountDisplay}
+        >
           <Button
             variant="outlined"
             color="primary"
@@ -198,14 +215,15 @@ export default function Nav({ loggedIn, data, revalidate }) {
       )}
       {loggedIn && (
         <Box
-          //   display="flex"
-          //   flexDirection="row"
-          //   alignItems="center"
+          display="flex"
+          flexDirection="row"
+          alignItems="center"
           marginRight="10%"
         >
           <Button
             aria-controls="simple-menu"
             aria-haspopup="true"
+            color="primary"
             variant="outlined"
             onClick={handleClick}
             className={classes.buttonMenu}
@@ -249,6 +267,12 @@ export default function Nav({ loggedIn, data, revalidate }) {
               </Button>
             </MenuItem>
           </Menu>
+          <Avatar
+            src={base64Img.filter((e) => {
+              return e !== undefined;
+            })}
+            className={classes.avatar}
+          ></Avatar>
         </Box>
       )}
     </Box>

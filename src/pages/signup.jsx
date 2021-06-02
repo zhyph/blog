@@ -3,11 +3,31 @@ import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import cookie from 'js-cookie';
 import FileBase64 from 'react-file-base64';
+import imageCompression from 'browser-image-compression';
 
 function SignUp() {
   const Router = useRouter();
   const [dataUri, setDataUri] = useState('');
   const [files, setFiles] = useState([]);
+  const [base, setbase] = useState();
+  const [imageStates, setImageStates] = useState({
+    maxSizeMB: 1,
+    maxWidthOrHeight: 400,
+    webWorker: {
+      progress: null,
+      inputSize: null,
+      outputSize: null,
+      inputUrl: null,
+      outputUrl: null,
+    },
+    mainThread: {
+      progress: null,
+      inputSize: null,
+      outputSize: null,
+      inputUrl: null,
+      outputUrl: null,
+    },
+  });
 
   const [signupError, setSignupError] = useState('');
   const [email, setEmail] = useState('');
@@ -50,7 +70,7 @@ function SignUp() {
         password,
         name,
         type: '1',
-        // imageBase64: files.base64,
+        base64: base,
         // profilePictureRef.current.files[0],
       }),
     })
@@ -67,6 +87,67 @@ function SignUp() {
       });
   };
 
+  const handleChange = (e) => {
+    setImageStates({ [e.target]: e.currentTarget.value });
+  };
+
+  const onProgress = (p, useWebWorker) => {
+    const targetName = useWebWorker ? 'webWorker' : 'mainThread';
+    setImageStates((prevState) => ({
+      ...prevState,
+      [targetName]: {
+        ...prevState[targetName],
+        progress: p,
+      },
+    }));
+  };
+
+  const compressImage = async (e, useWebWorker) => {
+    const file = e.target.files[0];
+    console.log('input', file);
+    console.log(
+      'ExifOrientation',
+      await imageCompression.getExifOrientation(file)
+    );
+    const targetName = useWebWorker ? 'webWorker' : 'mainThread';
+    setImageStates((prevState) => ({
+      ...prevState,
+      [targetName]: {
+        ...prevState[targetName],
+        inputSize: (file.size / 1024 / 1024).toFixed(2),
+        inputUrl: URL.createObjectURL(file),
+      },
+    }));
+    var options = {
+      maxSizeMB: imageStates.maxSizeMB,
+      maxWidthOrHeight: imageStates.maxWidthOrHeight,
+      useWebWorker,
+      onProgress: (p) => onProgress(p, useWebWorker),
+    };
+    const output = await imageCompression(file, options);
+    console.log('output', output);
+    var reader = new FileReader();
+    reader.readAsDataURL(output);
+    reader.onload = function () {
+      console.log(reader.result);
+      setbase(reader.result);
+    };
+    reader.onerror = function (error) {
+      console.log('Error: ', error);
+    };
+    setImageStates((prevState) => ({
+      ...prevState,
+      [targetName]: {
+        ...prevState[targetName],
+        outputSize: (output.size / 1024 / 1024).toFixed(2),
+        outputUrl: URL.createObjectURL(output),
+      },
+    }));
+  };
+
+  const version = imageCompression.version;
+  const { webWorker, mainThread, maxSizeMB, maxWidthOrHeight } = imageStates;
+
   return (
     <div>
       <form onSubmit={handleSubmit}>
@@ -82,14 +163,14 @@ function SignUp() {
           />
         </label>
         <br />
-        <label htmlFor="email">
+        <label htmlFor="cpf">
           Cpf
           <input
             value={cpf}
             onChange={(e) => setCpf(e.target.value)}
             name="cpf"
-            required
             type="text"
+            required
           />
         </label>
         <br />
@@ -99,29 +180,52 @@ function SignUp() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             name="password"
-            required
             type="password"
+            required
           />
         </label>
-
+        <br />
         <label htmlFor="name">
-          Name
+          name
           <input
-            required
             value={name}
             onChange={(e) => setName(e.target.value)}
-            id="name"
             name="name"
             type="text"
-            placeholder="Your name"
+            required
           />
         </label>
+        <br />
+
+        <label htmlFor="web-worker">
+          Compress in web-worker{' '}
+          {webWorker.progress && <span>{webWorker.progress} %</span>}
+          <input
+            id="web-worker"
+            type="file"
+            accept="image/*"
+            onChange={(e) => compressImage(e, true)}
+          />
+        </label>
+        <br />
+        {/* <p>
+          {webWorker.inputSize && (
+            <span>Source image size: {webWorker.inputSize} mb</span>
+          )}
+          {webWorker.outputSize && (
+            <span>, Output image size: {webWorker.outputSize} mb</span>
+          )}
+        </p> */}
+        <img
+          src={imageStates.webWorker.outputUrl}
+          width={imageStates.maxWidthOrHeight}
+        />
 
         <br />
 
-        <FileBase64 multiple={false} onDone={(e) => getFiles(e)} />
+        {/* <FileBase64 multiple={false} onDone={(e) => getFiles(e)} />
 
-        <img src={dataUri} width="200" height="200" alt="image" />
+        <img src={dataUri} width="200" height="200" alt="image" /> */}
 
         <input type="submit" value="Submit" />
         {signupError && <p style={{ color: 'red' }}>{signupError}</p>}

@@ -4,7 +4,7 @@ import useSWR from 'swr';
 import Link from 'next/link';
 import cookie from 'js-cookie';
 import { NextPage } from 'next';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import FileBase64 from 'react-file-base64';
 import {
   Box,
@@ -15,6 +15,7 @@ import {
   MenuItem,
 } from '@material-ui/core';
 import Nav from '../components/Nav';
+import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
   body: {
@@ -22,9 +23,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Home() {
-  const [files, setFiles] = useState([]);
-  // const [blobUri, setBlobUri] = useState('');
+function Home({ dados }) {
+  console.log(dados);
+  // const [files, setFiles] = useState([]);
+  // const [base64Img, setBase64Img] = useState();
 
   const classes = useStyles();
 
@@ -36,11 +38,9 @@ function Home() {
   let loggedIn = false;
   if (data.email) {
     loggedIn = true;
+    // const imgB = imgFinder;
+    // setBase64Img(imgB);
   }
-
-  const getFiles = (files) => {
-    setFiles(files);
-  };
 
   // console.log(files);
 
@@ -79,7 +79,17 @@ function Home() {
 
       {/* <FileBase64 multiple={false} onDone={(e) => getFiles(e)} /> */}
 
-      <Nav loggedIn={loggedIn} data={data} revalidate={revalidate} />
+      <Nav
+        loggedIn={loggedIn}
+        data={data}
+        revalidate={revalidate}
+        base64Img={dados.map((item) => {
+          if (item.email === data.email) {
+            // console.log(item.base64);
+            return item.base64;
+          }
+        })}
+      />
       {/* <Box
         width="100%"
         // height="30%"
@@ -144,3 +154,13 @@ function Home() {
 }
 
 export default Home;
+
+export const getServerSideProps = async (ctx) => {
+  const res = await fetch('http://localhost:3000/api/user');
+
+  return {
+    props: {
+      dados: await res.json(),
+    },
+  };
+};
