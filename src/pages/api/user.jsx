@@ -15,7 +15,17 @@ function findUser(db, email, callback) {
   collection.findOne({ email }, callback);
 }
 
-function createUser(db, email, cpf, password, name, type, base64, callback) {
+function createUser(
+  db,
+  email,
+  cpf,
+  password,
+  name,
+  type,
+  active,
+  base64,
+  callback
+) {
   const collection = db.collection('users');
   bcrypt.hash(password, saltRounds, function (err, hash) {
     // Store hash in your password DB.
@@ -27,6 +37,7 @@ function createUser(db, email, cpf, password, name, type, base64, callback) {
         password: hash,
         name,
         type,
+        active,
         base64,
       },
       function (err, userCreated) {
@@ -38,6 +49,8 @@ function createUser(db, email, cpf, password, name, type, base64, callback) {
 }
 
 export default async (req, res) => {
+  res.setHeader('Access-Control-Allow-Headers', '*');
+  res.setHeader('User-Agent', '*');
   if (req.method === 'GET') {
     const { db } = await connect();
     const response = await db
@@ -59,7 +72,8 @@ export default async (req, res) => {
       !req.body.cpf ||
       !req.body.password ||
       !req.body.name ||
-      !req.body.type
+      !req.body.type ||
+      !req.body.active
     ) {
       res.status(400).json({ error: 'Missing Body Parameters' });
       return;
@@ -68,7 +82,7 @@ export default async (req, res) => {
     //Verify email does not exist already
     const { db } = await connect();
 
-    const { email, password, type, cpf, name, base64 } = req.body;
+    const { email, password, type, cpf, name, active, base64 } = req.body;
 
     findUser(db, email, (err, user) => {
       if (err) {
@@ -84,6 +98,7 @@ export default async (req, res) => {
           password,
           name,
           type,
+          active,
           base64,
           // imageBase64,
           (creationResult) => {
@@ -102,6 +117,86 @@ export default async (req, res) => {
       } else {
         //User Exists
         res.status(403).json({ error: true, message: 'Email exists' });
+        return;
+      }
+    });
+  }
+  if (req.method === 'PATCH') {
+    if (
+      !req.body.userId ||
+      !req.body.name ||
+      !req.body.email ||
+      !req.body.cpf ||
+      !req.body.type ||
+      !req.body.active
+    ) {
+      res
+        .status(400)
+        .json({ error: true, message: 'Faltando corpo do elemento' });
+      return;
+    }
+
+    const { db } = await connect();
+
+    const { userId, name, email, cpf, type, active } = req.body;
+    const collection = db.collection('users');
+    collection.findOne({ userId }, (err, user) => {
+      if (err) {
+        res.status(500).json({ error: true, message: 'Error fiding user' });
+        return;
+      }
+      if (!user) {
+        res.status(403).json({ error: true, message: 'UserID errado' });
+        return;
+      }
+      if (user) {
+        collection.updateOne(
+          { userId: userId },
+          {
+            $set: {
+              name: name,
+              email: email,
+              cpf: cpf,
+              type: type,
+              active: active,
+            },
+          }
+        );
+        res.status(200).json({ message: 'Atualizado com succeso!' });
+        return;
+      }
+    });
+  }
+  if (req.method === 'DELETE') {
+    if (!req.body.userId) {
+      res.status(400).json({
+        error: true,
+        message: 'Para deletar é necessario informar userId',
+      });
+      return;
+    }
+
+    const { db } = await connect();
+
+    const { userId } = req.body;
+    const collection = db.collection('users');
+    collection.findOne({ userId }, (err, user) => {
+      if (err) {
+        res.status(500).json({ error: true, message: 'Error fiding user' });
+        return;
+      }
+      if (!user) {
+        res.status(403).json({ error: true, message: 'UserID errado' });
+        return;
+      }
+      if (user) {
+        try {
+          collection.deleteOne({ userId: userId });
+        } catch (e) {
+          res.status(403).json({ error: true, message: e });
+          return;
+        }
+        res.status(200).json({ message: 'Deletado com successo com succeso!' });
         return;
       }
     });

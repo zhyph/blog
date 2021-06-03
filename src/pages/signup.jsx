@@ -8,7 +8,7 @@ import imageCompression from 'browser-image-compression';
 function SignUp() {
   const Router = useRouter();
   const [dataUri, setDataUri] = useState('');
-  const [files, setFiles] = useState([]);
+  // const [files, setFiles] = useState([]);
   const [base, setbase] = useState();
   const [imageStates, setImageStates] = useState({
     maxSizeMB: 1,
@@ -53,9 +53,9 @@ function SignUp() {
   //     });
   //   };
 
-  const getFiles = (files) => {
-    setFiles(files);
-  };
+  // const getFiles = (files) => {
+  //   setFiles(files);
+  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -70,6 +70,7 @@ function SignUp() {
         password,
         name,
         type: '1',
+        active: '1',
         base64: base,
         // profilePictureRef.current.files[0],
       }),

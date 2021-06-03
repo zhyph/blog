@@ -175,12 +175,12 @@ function Home({ dados }) {
 
 export default Home;
 
-// export const getServerSideProps = async (ctx) => {
-//   const res = await fetch('http://localhost:3000/api/user');
+export const getServerSideProps = async (ctx) => {
+  const res = await fetch('http://localhost:3000/api/user');
 
-//   return {
-//     props: {
-//       dados: await res.json(),
-//     },
-//   };
-// };
+  return {
+    props: {
+      dados: await res.json(),
+    },
+  };
+};

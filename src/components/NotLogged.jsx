@@ -50,8 +50,17 @@ function NotLogged() {
           align="center"
           className={classes.notLoggedInText}
         >
-          Você precisa fazer Log In ou Sign Up para ver o conteudo
+          É necessário estar conectado a uma conta para vizualizar o conteúdo
+          dessa página
         </Typography>
+        {/* <Typography
+          variant="h3"
+          color="textPrimary"
+          align="center"
+          className={classes.notLoggedInText}
+        >
+          Faça o 
+        </Typography> */}
       </Container>
     </Box>
   );
