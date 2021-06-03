@@ -75,7 +75,7 @@ export default async (req, res) => {
       !req.body.type ||
       !req.body.active
     ) {
-      res.status(400).json({ error: 'Missing Body Parameters' });
+      res.status(400).json({ error: true, message: 'Missing Body Parameters' });
       return;
     }
 
@@ -150,19 +150,24 @@ export default async (req, res) => {
         return;
       }
       if (user) {
-        collection.updateOne(
-          { userId: userId },
-          {
-            $set: {
-              name: name,
-              email: email,
-              cpf: cpf,
-              type: type,
-              active: active,
-            },
-          }
-        );
-        res.status(200).json({ message: 'Atualizado com succeso!' });
+        try {
+          collection.updateOne(
+            { userId: userId },
+            {
+              $set: {
+                name: name,
+                email: email,
+                cpf: cpf,
+                type: type,
+                active: active,
+              },
+            }
+          );
+        } catch (e) {
+          res.status(403).json({ error: true, message: e });
+          return;
+        }
+        res.status(200).json({ message: 'Atualizado com sucesso!' });
         return;
       }
     });
@@ -200,7 +205,9 @@ export default async (req, res) => {
         return;
       }
     });
-  } else {
-    res.status(400).json({ error: true, message: 'Wrong Method' });
   }
+  // else {
+  //   res.status(400).json({ error: true, message: 'Wrong Method' });
+  //   return;
+  // }
 };
