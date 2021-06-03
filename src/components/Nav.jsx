@@ -19,6 +19,7 @@ import {
 } from '@material-ui/core';
 import { grey } from '@material-ui/core/colors';
 import { useRouter } from 'next/router';
+import Router from 'next/router';
 
 const useStyles = makeStyles((theme) => ({
   boxMenu: {
@@ -296,7 +297,9 @@ export default function Nav({ base64Img, loggedIn, data, revalidate }) {
                   revalidate();
                 }}
               >
-                <a className={classes.button}>Log Out</a>
+                <a onClick={() => Router.push('/')} className={classes.button}>
+                  Log Out
+                </a>
               </Button>
             </MenuItem>
           </Menu>
