@@ -18,6 +18,7 @@ import {
 import Nav from '../components/Nav';
 import axios from 'axios';
 import NotLogged from '../components/NotLogged';
+import { server } from '../config';
 
 const useStyles = makeStyles((theme) => ({
   body: {
@@ -64,10 +65,13 @@ function Home({ dados }) {
   // const [res, setRes] = useState();
 
   const classes = useStyles();
-  const { data, revalidate } = useSWR('/api/me', async function (args) {
-    const res = await fetch(args);
-    return res.json();
-  });
+  const { data, revalidate } = useSWR(
+    `${server}/api/me`,
+    async function (args) {
+      const res = await fetch(args);
+      return res.json();
+    }
+  );
   if (!data) return <h1>Loading...</h1>;
   let loggedIn = false;
   if (data.email) {
@@ -176,7 +180,7 @@ function Home({ dados }) {
 export default Home;
 
 export const getServerSideProps = async (ctx) => {
-  const res = await fetch('http://localhost:3000/api/user');
+  const res = await fetch(`${server}/api/user`);
 
   return {
     props: {

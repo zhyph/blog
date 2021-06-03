@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import cookie from 'js-cookie';
 import FileBase64 from 'react-file-base64';
 import imageCompression from 'browser-image-compression';
+import { server } from '../config';
 
 function SignUp() {
   const Router = useRouter();
@@ -59,7 +60,7 @@ function SignUp() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    fetch('/api/user', {
+    fetch(`${server}/api/user`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Router from 'next/router';
 import cookie from 'js-cookie';
 import { NextPage } from 'next';
+import { server } from '../config/index';
 
 const Login = (): NextPage | JSX.Element => {
   const [loginError, setLoginError] = useState('');
@@ -11,7 +12,7 @@ const Login = (): NextPage | JSX.Element => {
   function handleSubmit(e) {
     e.preventDefault();
     //call api
-    fetch('/api/auth', {
+    fetch(`${server}/api/auth`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

@@ -39,6 +39,7 @@ import Paper from '@material-ui/core/Paper';
 import MaskedInput from 'react-text-mask';
 import { Alert } from '@material-ui/lab';
 import Image from 'next/image';
+import { server } from '../config';
 
 const useStyles = makeStyles((theme) => ({
   body: {
@@ -207,10 +208,13 @@ const profile = ({ dados }) => {
 
   //   const [newTest, setNewTest] = useState();
   //   console.log(dados[0].type);
-  const { data, revalidate } = useSWR('/api/me', async function (args) {
-    const res = await fetch(args);
-    return res.json();
-  });
+  const { data, revalidate } = useSWR(
+    `${server}/api/me`,
+    async function (args) {
+      const res = await fetch(args);
+      return res.json();
+    }
+  );
   if (!data) return <h1>Loading...</h1>;
   let loggedIn = false;
   if (data.email) {
@@ -310,7 +314,7 @@ const profile = ({ dados }) => {
     e.preventDefault();
     console.log('passou');
     const newCpf = formData.cpf.replace(/[^0-9]/g, '');
-    fetch('/api/user', {
+    fetch(`${server}/api/user`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -355,7 +359,7 @@ const profile = ({ dados }) => {
   const handleDelete = async (e) => {
     e.preventDefault();
     console.log('passou delete');
-    fetch('/api/user', {
+    fetch(`${server}/api/user`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -639,7 +643,9 @@ const profile = ({ dados }) => {
                 width={400}
                 className={classes.profilePicture}
                 // layout="responsive"
-                src={finalBase64Src()?.base64}
+                src={
+                  finalBase64Src() ? finalBase64Src().base64 : '/default.png'
+                }
               ></Image>
             </div>
           </Box>
@@ -652,7 +658,7 @@ const profile = ({ dados }) => {
 export default profile;
 
 export const getServerSideProps = async (ctx) => {
-  const res = await fetch('http://localhost:3000/api/user');
+  const res = await fetch(`${server}/api/user`);
 
   return {
     props: {

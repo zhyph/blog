@@ -297,9 +297,7 @@ export default function Nav({ base64Img, loggedIn, data, revalidate }) {
                   revalidate();
                 }}
               >
-                <a onClick={() => Router.push('/')} className={classes.button}>
-                  Log Out
-                </a>
+                <a className={classes.button}>Log Out</a>
               </Button>
             </MenuItem>
           </Menu>
