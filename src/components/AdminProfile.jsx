@@ -234,6 +234,174 @@ function AdminProfile({ loggedIn, data, revalidate, dados }) {
   const [patchSuccess, setPatchSucces] = useState();
   const classes = useStyles();
 
+  const fetchUserData = (value) => {
+    // console.log(value);
+    const userIdCheck = dados?.map((item) => {
+      if (value === item.userId) {
+        return item;
+      }
+    });
+    const newFinalFilter = userIdCheck?.filter((e) => {
+      // console.log(e);
+      return e !== undefined;
+    });
+    // console.log(userIdCheck);
+    setFormData((prevState) => ({
+      ...prevState,
+      name: newFinalFilter[0].name,
+      email: newFinalFilter[0].email,
+      cpf: newFinalFilter[0].cpf,
+      type: newFinalFilter[0].type,
+      active: newFinalFilter[0].active,
+    }));
+  };
+
+  const userIdCheck = (e) => {
+    const value = e.target.value;
+    setErrorText((prevState) => ({
+      ...prevState,
+      userId: false,
+      textUserId: "",
+    }));
+    if (value.length === 36) {
+      setFormData((prevState) => ({
+        ...prevState,
+        userId: value,
+      }));
+      fetchUserData(value);
+    } else if (value.length >= 1) {
+      setErrorText((prevState) => ({
+        ...prevState,
+        textUserId: "UserID incorreto",
+        userId: true,
+      }));
+      return;
+    }
+  };
+
+  const errorCheck = (value) => {
+    if (value.length === 0) {
+      setErrorText((prevState) => ({
+        ...prevState,
+        textCpf: "",
+        cpf: false,
+      }));
+    } else if (value.length < 11 || value.length > 14) {
+      setErrorText((prevState) => ({
+        ...prevState,
+        textCpf: "CPF Invalido",
+        cpf: true,
+      }));
+    } else {
+      setErrorText((prevState) => ({
+        ...prevState,
+        textCpf: "",
+        cpf: false,
+      }));
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log("passou");
+    const newCpf = formData.cpf.replace(/[^0-9]/g, "");
+    fetch(`${server}/api/user`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        // 'Access-Control-Allow-Headers': '*',
+      },
+      body: JSON.stringify({
+        userId: formData.userId,
+        email: formData.email,
+        cpf: newCpf,
+        name: formData.name,
+        type: formData.type,
+        active: formData.active,
+      }),
+    })
+      .then((r) => {
+        return r.json();
+      })
+      .then((data) => {
+        if (data && data.error) {
+          setPatchError(data.message);
+        }
+        if (data && !data.error && data.message) {
+          setPatchSucces(data.message);
+        }
+        // if (data && data.token) {
+        //   //Set cookie
+        //   cookie.set('token', data.token, { expires: 2 });
+        //   Router.push('/');
+        // }
+      });
+    ref.current.value = "";
+    setFormData({
+      userId: "",
+      name: "",
+      email: "",
+      cpf: "",
+      type: "",
+      active: "",
+    });
+  };
+
+  const handleDelete = async (e) => {
+    e.preventDefault();
+    console.log("passou delete");
+    fetch(`${server}/api/user`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        // 'Access-Control-Allow-Headers': '*',
+      },
+      body: JSON.stringify({
+        userId: formData.userId,
+      }),
+    })
+      .then((r) => {
+        return r.json();
+      })
+      .then((data) => {
+        if (data && data.error) {
+          setPatchError(data.message);
+        }
+        if (data && !data.error && data.message) {
+          setPatchSucces(data.message);
+        }
+        // if (data && data.token) {
+        //   //Set cookie
+        //   cookie.set('token', data.token, { expires: 2 });
+        //   Router.push('/');
+        // }
+      });
+    ref.current.value = "";
+    setFormData({
+      userId: "",
+      name: "",
+      email: "",
+      cpf: "",
+      type: "",
+      active: "",
+    });
+  };
+
+  const handleCancel = (e) => {
+    e.preventDefault();
+    console.log("cancelado com succeso");
+    ref.current.value = "";
+    setErrorText({ ...errorText, userId: false, textUserId: "" });
+    setFormData({
+      userId: "",
+      name: "",
+      email: "",
+      cpf: "",
+      type: "",
+      active: "",
+    });
+  };
+
   return (
     <Container className={classes.loggedInBox}>
       <Box className={classes.loggedFormBox}>

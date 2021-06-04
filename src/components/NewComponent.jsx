@@ -8,6 +8,7 @@ import {
   TextField,
   Button,
 } from "@material-ui/core";
+import MaskedInput from "react-text-mask";
 
 const useStyles = makeStyles((theme) => ({
   body: {
@@ -150,15 +151,51 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+function TextMaskCustom(props) {
+  const { inputRef, ...other } = props;
+
+  return (
+    <MaskedInput
+      {...other}
+      ref={(ref) => {
+        inputRef(ref ? ref.inputElement : null);
+      }}
+      mask={[
+        /\d/,
+        /\d/,
+        /\d/,
+        ".",
+        /\d/,
+        /\d/,
+        /\d/,
+        ".",
+        /\d/,
+        /\d/,
+        /\d/,
+        "-",
+        /\d/,
+        /\d/,
+      ]}
+      // placeholderChar={'\u2000'}
+      // showMask
+    />
+  );
+}
+
 function NewComponent({ dados, data, revalidate }) {
   const classes = useStyles();
-  const [teste, setTeste] = useState({ name: "" });
+  const [teste, setTeste] = useState({ name: "", email: "", cpf: "" });
   const [controle, tas] = useState();
 
   useEffect(() => {
-    setTeste({ name: finalBase64Src().name });
+    if (finalBase64Src()) {
+      const { name, email, cpf } = finalBase64Src();
+      setTeste({ name: name, email: email, cpf: cpf });
+    } else {
+      return;
+    }
   }, [controle]);
-  // console.log(teste.name);
+  console.log(teste ? teste : "");
 
   const finalBase64Src = () => {
     const base64Array = dados?.map((item) => {
@@ -212,6 +249,7 @@ function NewComponent({ dados, data, revalidate }) {
                   label="Nome"
                   name="name"
                   value={teste?.name}
+                  InputLabelProps={{ shrink: true }}
                   required
                   onChange={(e) => handleChange(e)}
                 />
@@ -222,15 +260,11 @@ function NewComponent({ dados, data, revalidate }) {
               >
                 <TextField
                   label="Email"
+                  name="email"
                   type="email"
                   required
-                  // value={newTest.email}
-                  // onChange={(e) =>
-                  //   setNewTest((prevState) => ({
-                  //     ...prevState,
-                  //     email: e.target.value,
-                  //   }))
-                  // }
+                  value={teste?.email}
+                  onChange={(e) => handleChange(e)}
                 />
               </FormControl>
               <FormControl
@@ -239,18 +273,15 @@ function NewComponent({ dados, data, revalidate }) {
               >
                 <TextField
                   label="CPF"
-                  // InputProps={{
-                  //   inputComponent: TextMaskCustom,
-                  //   value: formData.cpf,
-                  //   // value: this.state.textmask,
-                  //   // onChange: this.handleChange('textmask'),
-                  //   onBlur: (e) => errorCheck(e.target.value),
-                  //   onChange: (e) =>
-                  //     setFormData((prevState) => ({
-                  //       ...prevState,
-                  //       cpf: e.target.value,
-                  //     })),
-                  // }}
+                  name="cpf"
+                  InputProps={{
+                    inputComponent: TextMaskCustom,
+                    value: teste?.cpf,
+                    onChange: (e) => handleChange(e),
+                    // value: this.state.textmask,
+                    // onChange: this.handleChange('textmask'),
+                    // onBlur: (e) => errorCheck(e.target.value),
+                  }}
                   required
                   // error={errorText.cpf}
                   // helperText={errorText.textCpf}
