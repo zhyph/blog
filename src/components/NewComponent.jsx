@@ -185,6 +185,13 @@ const useStyles = makeStyles((theme) => ({
 
 function NewComponent({ dados, data, revalidate }) {
   const classes = useStyles();
+  const [teste, setTeste] = useState();
+  const [controle, tas] = useState();
+
+  useEffect(() => {
+    setTeste(finalBase64Src());
+  }, [controle]);
+  console.log(teste);
 
   const finalBase64Src = () => {
     const base64Array = dados?.map((item) => {
