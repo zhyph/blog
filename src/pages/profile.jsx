@@ -41,6 +41,7 @@ import MaskedInput from 'react-text-mask';
 import { Alert } from '@material-ui/lab';
 import Image from 'next/image';
 import { server } from '../config';
+import NewComponent from '../components/NewComponent';
 
 const useStyles = makeStyles((theme) => ({
   body: {
@@ -231,6 +232,7 @@ const profile = ({ dados }) => {
     textUserId: '',
     textCpf: '',
   });
+  const [newTest, setNewTest] = useState();
   const [patchError, setPatchError] = useState();
   const [patchSuccess, setPatchSucces] = useState();
 
@@ -269,18 +271,18 @@ const profile = ({ dados }) => {
         return item;
       }
     });
-    const finalFilter = userIdCheck?.filter((e) => {
+    const newFinalFilter = userIdCheck?.filter((e) => {
       // console.log(e);
       return e !== undefined;
     });
     // console.log(userIdCheck);
     setFormData((prevState) => ({
       ...prevState,
-      name: finalFilter[0].name,
-      email: finalFilter[0].email,
-      cpf: finalFilter[0].cpf,
-      type: finalFilter[0].type,
-      active: finalFilter[0].active,
+      name: newFinalFilter[0].name,
+      email: newFinalFilter[0].email,
+      cpf: newFinalFilter[0].cpf,
+      type: newFinalFilter[0].type,
+      active: newFinalFilter[0].active,
     }));
   };
 
@@ -310,7 +312,7 @@ const profile = ({ dados }) => {
   const handleCancel = (e) => {
     e.preventDefault();
     console.log('cancelado com succeso');
-    ref.current.value = ' ';
+    ref.current.value = '';
     setErrorText({ ...errorText, userId: false, textUserId: '' });
     setFormData({
       userId: '',
@@ -373,7 +375,7 @@ const profile = ({ dados }) => {
         //   Router.push('/');
         // }
       });
-    ref.current.value = ' ';
+    ref.current.value = '';
     setFormData({
       userId: '',
       name: '',
@@ -413,7 +415,7 @@ const profile = ({ dados }) => {
         //   Router.push('/');
         // }
       });
-    ref.current.value = ' ';
+    ref.current.value = '';
     setFormData({
       userId: '',
       name: '',
@@ -423,6 +425,13 @@ const profile = ({ dados }) => {
       active: '',
     });
   };
+
+  // useEffect(() => {
+  //   console.log('testeputa');
+  //   setNewTest(finalBase64Src());
+  // }, []);
+
+  // console.log(userIdCheck());
 
   // console.log(ref?.current?.value);
 
@@ -434,6 +443,7 @@ const profile = ({ dados }) => {
   // };
 
   // console.log(formData);
+  // console.log(newTest);
 
   return (
     <Box height={'100vh'} width="auto" className={classes.body}>
@@ -663,31 +673,117 @@ const profile = ({ dados }) => {
           </Box>
         </Container>
       ) : (
-        <Container className={classes.normalUserLoggedInBox}>
-          <Box className={classes.normalUserBox}>
-            <Box className={classes.newBoxTest} spacing={3}>
-              <Box
-                // item xs={6}
-                className={classes.normalUserElement}
-              >
-                <img
-                  width="100%"
-                  className={classes.profilePicture}
-                  // layout="responsive"
-                  src={
-                    finalBase64Src() ? finalBase64Src().base64 : '/default.png'
-                  }
-                />
-              </Box>
-              <Box
-                // item xs={6}
-                className={classes.normalUserElement}
-              >
-                <h1>Teste</h1>
-              </Box>
-            </Box>
-          </Box>
-        </Container>
+        <NewComponent
+          loggedIn={loggedIn}
+          data={data}
+          revalidate={revalidate}
+          dados={dados}
+        ></NewComponent>
+        // <Container className={classes.normalUserLoggedInBox}>
+        //   <Box className={classes.normalUserBox}>
+        //     <Box className={classes.newBoxTest} spacing={3}>
+        //       <Box
+        //         // item xs={6}
+        //         className={classes.normalUserElement}
+        //       >
+        //         <img
+        //           width="60%"
+        //           className={classes.profilePicture}
+        //           // layout="responsive"
+        //           src={
+        //             finalBase64Src() ? finalBase64Src().base64 : '/default.png'
+        //           }
+        //         />
+        //       </Box>
+        //       <Box
+        //         // item xs={6}
+        //         className={classes.normalUserElement}
+        //       >
+        //         <form
+        //           className={classes.root}
+        //           onSubmit={(e) => handleSubmit(e)}
+        //           autoComplete="off"
+        //         >
+        //           <FormControl
+        //             component="fieldset"
+        //             className={classes.inputComponent}
+        //           >
+        //             <TextField
+        //               label="Nome"
+        //               value={formData.name}
+        //               required
+        //               onChange={(e) =>
+        //                 setFormData((prevState) => ({
+        //                   ...prevState,
+        //                   name: e.target.value,
+        //                 }))
+        //               }
+        //             />
+        //           </FormControl>
+        //           <FormControl
+        //             component="fieldset"
+        //             className={classes.inputComponent}
+        //           >
+        //             <TextField
+        //               label="Email"
+        //               type="email"
+        //               required
+        //               // value={newTest.email}
+        //               onChange={(e) =>
+        //                 setNewTest((prevState) => ({
+        //                   ...prevState,
+        //                   email: e.target.value,
+        //                 }))
+        //               }
+        //             />
+        //           </FormControl>
+        //           <FormControl
+        //             component="fieldset"
+        //             className={classes.inputComponent}
+        //           >
+        //             <TextField
+        //               label="CPF"
+        //               InputProps={{
+        //                 inputComponent: TextMaskCustom,
+        //                 value: formData.cpf,
+        //                 // value: this.state.textmask,
+        //                 // onChange: this.handleChange('textmask'),
+        //                 onBlur: (e) => errorCheck(e.target.value),
+        //                 onChange: (e) =>
+        //                   setFormData((prevState) => ({
+        //                     ...prevState,
+        //                     cpf: e.target.value,
+        //                   })),
+        //               }}
+        //               required
+        //               error={errorText.cpf}
+        //               helperText={errorText.textCpf}
+        //               // }
+        //             />
+        //           </FormControl>
+        //           <div className={classes.teste}>
+        //             <div className={classes.buttonsWrapper}>
+        //               <Button
+        //                 variant="contained"
+        //                 onClick={(e) => handleCancel(e)}
+        //               >
+        //                 Cancelar
+        //               </Button>
+        //               <Button
+        //                 type="submit"
+        //                 variant="contained"
+        //                 color="primary"
+        //                 // disabled={formData.userId ? false : true}
+        //               >
+        //                 Enviar
+        //               </Button>
+        //             </div>
+        //           </div>
+        //         </form>
+        //       </Box>
+        //     </Box>
+        //   </Box>
+        // </Container>
       )}
     </Box>
   );
