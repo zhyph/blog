@@ -50,7 +50,7 @@ function NotLogged() {
           align="center"
           className={classes.notLoggedInText}
         >
-          É necessário estar conectado a uma conta para vizualizar o conteúdo
+          É necessário estar conectado a uma conta para visualizar o conteúdo
           dessa página
         </Typography>
         {/* <Typography

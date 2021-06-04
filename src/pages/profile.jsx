@@ -32,6 +32,7 @@ import {
   Select,
   MenuItem,
   Typography,
+  Grid,
 } from '@material-ui/core';
 import axios from 'axios';
 import NotLogged from '../components/NotLogged';
@@ -43,24 +44,35 @@ import { server } from '../config';
 
 const useStyles = makeStyles((theme) => ({
   body: {
+    height: '100vh',
     backgroundColor: 'grey',
+  },
+  newBoxTest: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    height: '100%',
   },
   table: {
     minWidth: 650,
   },
+  normalUserBox: {
+    display: 'flex',
+    alignItems: 'center',
+    marginBottom: theme.spacing(4),
+    height: '100%',
+    // width: '100%',
+  },
+  normalUserElement: {
+    display: 'grid',
+    placeItems: 'center',
+    // marginBottom: theme.spacing(4),
+    height: '50%',
+    // width: '100%',
+  },
   loggedFormBox: {
     display: 'grid',
     placeItems: 'center',
-    marginBottom: theme.spacing(4),
-    [theme.breakpoints.down('md')]: {
-      maxHeight: '660px',
-      maxWidth: '960px',
-    },
-    [theme.breakpoints.down('sm')]: {
-      maxHeight: '300px',
-      maxWidth: '600px',
-      // backgroundColor: 'purple',
-    },
   },
   loggedInContainer: {
     // display: 'grid',
@@ -87,6 +99,22 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
     flexDirection: 'column',
     marginTop: theme.spacing(3),
+    [theme.breakpoints.down('md')]: {
+      height: '100%',
+    },
+  },
+  normalUserLoggedInBox: {
+    backgroundColor: 'white',
+    height: '90%',
+    width: '100%',
+    display: 'flex',
+    // alignItems: 'center',
+    justifyContent: 'center',
+    // flexDirection: 'row',
+    marginTop: theme.spacing(3),
+    [theme.breakpoints.down('md')]: {
+      height: '100%',
+    },
   },
   inputComponent: {
     marginRight: theme.spacing(1),
@@ -635,19 +663,29 @@ const profile = ({ dados }) => {
           </Box>
         </Container>
       ) : (
-        <Container className={classes.loggedInBox}>
-          <Box className={classes.loggedFormBox}>
-            <div>
-              <Image
-                height={266}
-                width={400}
-                className={classes.profilePicture}
-                // layout="responsive"
-                src={
-                  finalBase64Src() ? finalBase64Src().base64 : '/default.png'
-                }
-              ></Image>
-            </div>
+        <Container className={classes.normalUserLoggedInBox}>
+          <Box className={classes.normalUserBox}>
+            <Box className={classes.newBoxTest} spacing={3}>
+              <Box
+                // item xs={6}
+                className={classes.normalUserElement}
+              >
+                <img
+                  width="100%"
+                  className={classes.profilePicture}
+                  // layout="responsive"
+                  src={
+                    finalBase64Src() ? finalBase64Src().base64 : '/default.png'
+                  }
+                />
+              </Box>
+              <Box
+                // item xs={6}
+                className={classes.normalUserElement}
+              >
+                <h1>Teste</h1>
+              </Box>
+            </Box>
           </Box>
         </Container>
       )}
