@@ -9,6 +9,8 @@ import {
   Button,
 } from "@material-ui/core";
 import MaskedInput from "react-text-mask";
+import { server } from "../config";
+import { Alert } from "@material-ui/lab";
 
 const useStyles = makeStyles((theme) => ({
   body: {
@@ -186,6 +188,9 @@ function NewComponent({ dados, data, revalidate }) {
   const classes = useStyles();
   const [teste, setTeste] = useState({ name: "", email: "", cpf: "" });
   const [controle, tas] = useState();
+  const [patchError, setPatchError] = useState();
+  const [patchSuccess, setPatchSucces] = useState();
+  const [newBool, setNewBool] = useState(true);
 
   useEffect(() => {
     if (finalBase64Src()) {
@@ -215,6 +220,57 @@ function NewComponent({ dados, data, revalidate }) {
       ...prevState,
       [e.target.name]: e.target.value,
     }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log("passou");
+    const newCpf = teste.cpf.replace(/[^0-9]/g, "");
+    fetch(`${server}/api/user`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        // 'Access-Control-Allow-Headers': '*',
+      },
+      body: JSON.stringify({
+        userId: data.userId,
+        name: teste.name,
+        email: teste.email,
+        cpf: newCpf,
+      }),
+    })
+      .then((r) => {
+        return r.json();
+      })
+      .then((data) => {
+        if (data && data.error) {
+          setPatchError(data.message);
+        }
+        if (data && !data.error && data.message) {
+          setPatchSucces(data.message);
+        }
+        // if (data && data.token) {
+        //   //Set cookie
+        //   cookie.set('token', data.token, { expires: 2 });
+        //   Router.push('/');
+        // }
+      });
+  };
+
+  // const handleCancel = (e) => {
+  //   e.preventDefault();
+  //   console.log("cancelado com succeso");
+  //   setErrorText({ ...errorText, userId: false, textUserId: "" });
+  //   setTeste({
+  //     name: "",
+  //     email: "",
+  //     cpf: "",
+  //   });
+  // };
+
+  const handleBool = (e) => {
+    e.preventDefault();
+    setNewBool(!newBool);
   };
 
   return (
@@ -247,6 +303,7 @@ function NewComponent({ dados, data, revalidate }) {
               >
                 <TextField
                   label="Nome"
+                  disabled={newBool}
                   name="name"
                   value={teste?.name}
                   InputLabelProps={{ shrink: true }}
@@ -260,6 +317,7 @@ function NewComponent({ dados, data, revalidate }) {
               >
                 <TextField
                   label="Email"
+                  disabled={newBool}
                   name="email"
                   type="email"
                   required
@@ -273,6 +331,7 @@ function NewComponent({ dados, data, revalidate }) {
               >
                 <TextField
                   label="CPF"
+                  disabled={newBool}
                   name="cpf"
                   InputProps={{
                     inputComponent: TextMaskCustom,
@@ -290,8 +349,11 @@ function NewComponent({ dados, data, revalidate }) {
               </FormControl>
               <div className={classes.teste}>
                 <div className={classes.buttonsWrapper}>
-                  <Button variant="contained" onClick={(e) => handleCancel(e)}>
+                  {/* <Button variant="contained" onClick={(e) => handleCancel(e)}>
                     Cancelar
+                  </Button> */}
+                  <Button variant="contained" onClick={(e) => handleBool(e)}>
+                    Editar
                   </Button>
                   <Button
                     type="submit"
@@ -304,6 +366,16 @@ function NewComponent({ dados, data, revalidate }) {
                 </div>
               </div>
             </form>
+            {patchSuccess && (
+              <Alert className={classes.alertMargin} severity="success">
+                {patchSuccess}
+              </Alert>
+            )}
+            {patchError && (
+              <Alert className={classes.alertMargin} severity="error">
+                {patchError}
+              </Alert>
+            )}
           </Box>
         </Box>
       </Box>

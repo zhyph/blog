@@ -1,17 +1,17 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 
-import { NextApiRequest, NextApiResponse } from 'next';
-import connect from '../../utils/database';
-import assert from 'assert';
-import bcrypt from 'bcrypt';
-import { v4 } from 'uuid';
-import jwt from 'jsonwebtoken';
+import { NextApiRequest, NextApiResponse } from "next";
+import connect from "../../utils/database";
+import assert from "assert";
+import bcrypt from "bcrypt";
+import { v4 } from "uuid";
+import jwt from "jsonwebtoken";
 
 const jwtSecret = process.env.JWT_SECRET;
 const saltRounds = 10;
 
 function findUser(db, email, callback) {
-  const collection = db.collection('users');
+  const collection = db.collection("users");
   collection.findOne({ email }, callback);
 }
 
@@ -26,7 +26,7 @@ function createUser(
   base64,
   callback
 ) {
-  const collection = db.collection('users');
+  const collection = db.collection("users");
   bcrypt.hash(password, saltRounds, function (err, hash) {
     // Store hash in your password DB.
     collection.insertOne(
@@ -49,12 +49,12 @@ function createUser(
 }
 
 export default async (req, res) => {
-  res.setHeader('Access-Control-Allow-Headers', '*');
-  res.setHeader('User-Agent', '*');
-  if (req.method === 'GET') {
+  res.setHeader("Access-Control-Allow-Headers", "*");
+  res.setHeader("User-Agent", "*");
+  if (req.method === "GET") {
     const { db } = await connect();
     const response = await db
-      .collection('users')
+      .collection("users")
       .find()
       .toArray()
       .then((items) => {
@@ -66,7 +66,7 @@ export default async (req, res) => {
     res.status(200).json(response);
     return;
   }
-  if (req.method === 'POST') {
+  if (req.method === "POST") {
     if (
       !req.body.email ||
       !req.body.cpf ||
@@ -75,7 +75,7 @@ export default async (req, res) => {
       !req.body.type ||
       !req.body.active
     ) {
-      res.status(400).json({ error: true, message: 'Missing Body Parameters' });
+      res.status(400).json({ error: true, message: "Missing Body Parameters" });
       return;
     }
 
@@ -86,7 +86,7 @@ export default async (req, res) => {
 
     findUser(db, email, (err, user) => {
       if (err) {
-        res.status(500).json({ error: true, message: 'Error fiding user' });
+        res.status(500).json({ error: true, message: "Error fiding user" });
         return;
       }
       if (!user) {
@@ -116,37 +116,37 @@ export default async (req, res) => {
         );
       } else {
         //User Exists
-        res.status(403).json({ error: true, message: 'Email exists' });
+        res.status(403).json({ error: true, message: "Email exists" });
         return;
       }
     });
   }
-  if (req.method === 'PATCH') {
+  if (req.method === "PATCH") {
     if (
       !req.body.userId ||
       !req.body.name ||
       !req.body.email ||
-      !req.body.cpf ||
-      !req.body.type ||
-      !req.body.active
+      !req.body.cpf
+      // !req.body.type ||
+      // !req.body.active
     ) {
       res
         .status(400)
-        .json({ error: true, message: 'Faltando corpo do elemento' });
+        .json({ error: true, message: "Faltando corpo do elemento" });
       return;
     }
 
     const { db } = await connect();
 
     const { userId, name, email, cpf, type, active } = req.body;
-    const collection = db.collection('users');
+    const collection = db.collection("users");
     collection.findOne({ userId }, (err, user) => {
       if (err) {
-        res.status(500).json({ error: true, message: 'Error fiding user' });
+        res.status(500).json({ error: true, message: "Error fiding user" });
         return;
       }
       if (!user) {
-        res.status(403).json({ error: true, message: 'UserID errado' });
+        res.status(403).json({ error: true, message: "UserID errado" });
         return;
       }
       if (user) {
@@ -167,16 +167,16 @@ export default async (req, res) => {
           res.status(403).json({ error: true, message: e });
           return;
         }
-        res.status(200).json({ message: 'Atualizado com sucesso!' });
+        res.status(200).json({ message: "Atualizado com sucesso!" });
         return;
       }
     });
   }
-  if (req.method === 'DELETE') {
+  if (req.method === "DELETE") {
     if (!req.body.userId) {
       res.status(400).json({
         error: true,
-        message: 'Para deletar é necessario informar userId',
+        message: "Para deletar é necessario informar userId",
       });
       return;
     }
@@ -184,14 +184,14 @@ export default async (req, res) => {
     const { db } = await connect();
 
     const { userId } = req.body;
-    const collection = db.collection('users');
+    const collection = db.collection("users");
     collection.findOne({ userId }, (err, user) => {
       if (err) {
-        res.status(500).json({ error: true, message: 'Error fiding user' });
+        res.status(500).json({ error: true, message: "Error fiding user" });
         return;
       }
       if (!user) {
-        res.status(403).json({ error: true, message: 'UserID errado' });
+        res.status(403).json({ error: true, message: "UserID errado" });
         return;
       }
       if (user) {
@@ -201,7 +201,7 @@ export default async (req, res) => {
           res.status(403).json({ error: true, message: e });
           return;
         }
-        res.status(200).json({ message: 'Deletado com successo com succeso!' });
+        res.status(200).json({ message: "Deletado com successo com succeso!" });
         return;
       }
     });
