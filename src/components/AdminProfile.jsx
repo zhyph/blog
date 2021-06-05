@@ -236,17 +236,14 @@ function AdminProfile({ loggedIn, data, revalidate, dados }) {
   const classes = useStyles();
 
   const fetchUserData = (value) => {
-    // console.log(value);
     const userIdCheck = dados?.map((item) => {
       if (value === item.userId) {
         return item;
       }
     });
     const newFinalFilter = userIdCheck?.filter((e) => {
-      // console.log(e);
       return e !== undefined;
     });
-    // console.log(userIdCheck);
     setFormData((prevState) => ({
       ...prevState,
       name: newFinalFilter[0].name,
@@ -303,11 +300,11 @@ function AdminProfile({ loggedIn, data, revalidate, dados }) {
     }
   };
 
-  console.log(formData.cpf.length);
+  // console.log(formData.cpf.length);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("passou");
+    // console.log("passou");
     const newCpf = formData.cpf.replace(/[^0-9]/g, "");
     fetch(`${server}/api/user`, {
       method: "PATCH",
@@ -353,7 +350,7 @@ function AdminProfile({ loggedIn, data, revalidate, dados }) {
 
   const handleDelete = async (e) => {
     e.preventDefault();
-    console.log("passou delete");
+    // console.log("passou delete");
     fetch(`${server}/api/user`, {
       method: "DELETE",
       headers: {
@@ -393,7 +390,7 @@ function AdminProfile({ loggedIn, data, revalidate, dados }) {
 
   const handleCancel = (e) => {
     e.preventDefault();
-    console.log("cancelado com succeso");
+    // console.log("cancelado com succeso");
     ref.current.value = "";
     setErrorText({ ...errorText, userId: false, textUserId: "" });
     setFormData({
@@ -410,7 +407,7 @@ function AdminProfile({ loggedIn, data, revalidate, dados }) {
     <Container className={classes.loggedInBox}>
       <Box className={classes.loggedFormBox}>
         <Typography variant="h6" className={classes.textSize}>
-          Preencha o formulario se você desejar editar ou excluir algum usuario
+          Copie e cole o userId para editar/excluir um usuario
         </Typography>
         <form
           className={classes.root}

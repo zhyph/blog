@@ -425,15 +425,17 @@ function NewComponent({ dados, data, revalidate }) {
             >
               Editar
             </Button>
-            <Button
-              type="submit"
-              // fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-            >
-              Entrar
-            </Button>
+            {!edit && (
+              <Button
+                type="submit"
+                // fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+              >
+                Atualizar
+              </Button>
+            )}
           </Grid>
         </form>
       </div>
