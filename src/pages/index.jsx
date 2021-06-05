@@ -1,11 +1,11 @@
-import Head from 'next/head';
-import fetch from 'isomorphic-unfetch';
-import useSWR from 'swr';
-import Link from 'next/link';
-import cookie from 'js-cookie';
-import { NextPage } from 'next';
-import { useEffect, useState } from 'react';
-import FileBase64 from 'react-file-base64';
+import Head from "next/head";
+import fetch from "isomorphic-unfetch";
+import useSWR from "swr";
+import Link from "next/link";
+import cookie from "js-cookie";
+import { NextPage } from "next";
+import { useEffect, useState } from "react";
+import FileBase64 from "react-file-base64";
 import {
   Box,
   makeStyles,
@@ -14,45 +14,45 @@ import {
   Menu,
   MenuItem,
   Container,
-} from '@material-ui/core';
-import Nav from '../components/Nav';
-import axios from 'axios';
-import NotLogged from '../components/NotLogged';
-import { server } from '../config';
+} from "@material-ui/core";
+import Nav from "../components/Nav";
+import axios from "axios";
+import NotLogged from "../components/NotLogged";
+import { server } from "../config";
 
 const useStyles = makeStyles((theme) => ({
   body: {
-    backgroundColor: 'grey',
+    backgroundColor: "grey",
   },
   notLoggedInContainer: {
-    backgroundColor: 'white',
-    height: '70%',
-    width: '70%',
-    display: 'grid',
-    placeItems: 'center',
+    backgroundColor: "white",
+    height: "70%",
+    width: "70%",
+    display: "grid",
+    placeItems: "center",
     // paddingTop: '1rem',
-    [theme.breakpoints.down('md')]: {
-      maxHeight: '660px',
-      maxWidth: '960px',
+    [theme.breakpoints.down("md")]: {
+      maxHeight: "660px",
+      maxWidth: "960px",
     },
-    [theme.breakpoints.down('sm')]: {
-      maxHeight: '300px',
-      maxWidth: '600px',
+    [theme.breakpoints.down("sm")]: {
+      maxHeight: "300px",
+      maxWidth: "600px",
       // backgroundColor: 'purple',
     },
   },
   notLoggedInBox: {
-    height: '90vh',
-    width: '100%',
-    display: 'grid',
-    placeItems: 'center',
+    height: "90vh",
+    width: "100%",
+    display: "grid",
+    placeItems: "center",
   },
   notLoggedInText: {
-    [theme.breakpoints.down('md')]: {
-      fontSize: '1.5rem',
+    [theme.breakpoints.down("md")]: {
+      fontSize: "1.5rem",
     },
-    [theme.breakpoints.down('sm')]: {
-      fontSize: '1rem',
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "1rem",
     },
   },
 }));
@@ -78,9 +78,22 @@ function Home({ dados }) {
     loggedIn = true;
   }
 
+  const finalBase64Src = () => {
+    const base64Array = dados?.map((item) => {
+      if (data.userId === item.userId) {
+        return item;
+      }
+    });
+    const finalFilter = base64Array?.filter((e) => {
+      // console.log(e);
+      return e !== undefined;
+    });
+    return finalFilter ? finalFilter[0] : "";
+  };
+
   return (
     <Box
-      height={!loggedIn ? '100vh' : '100%'}
+      height={!loggedIn ? "100vh" : "100%"}
       width="auto"
       className={classes.body}
     >
@@ -97,7 +110,7 @@ function Home({ dados }) {
         revalidate={revalidate}
         base64Img={dados}
       />
-
+      {finalBase64Src()?.active === "0" && <NotLogged />}
       {!loggedIn && (
         <NotLogged></NotLogged>
         // <Box className={classes.notLoggedInBox}>
@@ -113,8 +126,24 @@ function Home({ dados }) {
         //   </Container>
         // </Box>
       )}
+    </Box>
+  );
+}
 
-      {/* <Box
+export default Home;
+
+export const getServerSideProps = async (ctx) => {
+  const res = await fetch(`${server}/api/user`);
+
+  return {
+    props: {
+      dados: await res.json(),
+    },
+  };
+};
+
+{
+  /* <Box
         width="100%"
         // height="30%"
         bgcolor="black"
@@ -149,11 +178,15 @@ function Home({ dados }) {
               </Link>
             </Button>
           </Box>
-        )} */}
+        )} */
+}
 
-      {/* </Box> */}
+{
+  /* </Box> */
+}
 
-      {/* {loggedIn && (
+{
+  /* {loggedIn && (
         <>
           <p>Welcome {data.email}!</p>
           <button
@@ -165,26 +198,14 @@ function Home({ dados }) {
             Logout
           </button>
         </>
-      )} */}
-      {/* {!loggedIn && (
+      )} */
+}
+{
+  /* {!loggedIn && (
         <>
           <Link href="/login">Login</Link>
           <p>or</p>
           <Link href="/signup">Sign Up</Link>
         </>
-      )} */}
-    </Box>
-  );
+      )} */
 }
-
-export default Home;
-
-export const getServerSideProps = async (ctx) => {
-  const res = await fetch(`${server}/api/user`);
-
-  return {
-    props: {
-      dados: await res.json(),
-    },
-  };
-};

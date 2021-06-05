@@ -201,7 +201,7 @@ export default async (req, res) => {
           res.status(403).json({ error: true, message: e });
           return;
         }
-        res.status(200).json({ message: "Deletado com successo com succeso!" });
+        res.status(200).json({ message: "Deletado com successo!" });
         return;
       }
     });

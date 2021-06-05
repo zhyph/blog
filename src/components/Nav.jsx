@@ -1,13 +1,13 @@
-import Head from 'next/head';
-import fetch from 'isomorphic-unfetch';
-import useSWR from 'swr';
-import Link from 'next/link';
-import cookie from 'js-cookie';
-import { NextPage } from 'next';
-import { useEffect, useState } from 'react';
-import FileBase64 from 'react-file-base64';
-import Image from 'next/image';
-import ArrowDropDownCircleRoundedIcon from '@material-ui/icons/ArrowDropDownCircleRounded';
+import Head from "next/head";
+import fetch from "isomorphic-unfetch";
+import useSWR from "swr";
+import Link from "next/link";
+import cookie from "js-cookie";
+import { NextPage } from "next";
+import { useEffect, useState } from "react";
+import FileBase64 from "react-file-base64";
+import Image from "next/image";
+import ArrowDropDownCircleRoundedIcon from "@material-ui/icons/ArrowDropDownCircleRounded";
 import {
   Box,
   makeStyles,
@@ -16,142 +16,142 @@ import {
   Menu,
   MenuItem,
   Avatar,
-} from '@material-ui/core';
-import { grey } from '@material-ui/core/colors';
-import { useRouter } from 'next/router';
-import Router from 'next/router';
+} from "@material-ui/core";
+import { grey } from "@material-ui/core/colors";
+// import { useRouter } from "next/router";
+import Router from "next/router";
 
 const useStyles = makeStyles((theme) => ({
   boxMenu: {
-    marginBottom: '2px',
+    marginBottom: "2px",
   },
   avatar: {
     // marginBottom: theme.spacing(1),
     marginLeft: theme.spacing(1),
   },
   whiteButton: {
-    fontWeight: '500',
-    margin: '5px',
-    color: 'white',
-    padding: '.2rem',
-    textDecoration: 'none',
-    [theme.breakpoints.down('sm')]: {
-      fontSize: '.8rem',
+    fontWeight: "500",
+    margin: "10px",
+    color: "white",
+    padding: ".5rem",
+    textDecoration: "none",
+    [theme.breakpoints.down("sm")]: {
+      fontSize: ".8rem",
       // backgroundColor: 'purple',
     },
-    [theme.breakpoints.up('md')]: {
-      fontSize: '1rem',
+    [theme.breakpoints.up("md")]: {
+      fontSize: "1rem",
     },
-    [theme.breakpoints.up('lg')]: {
-      fontSize: '1.3rem',
+    [theme.breakpoints.up("lg")]: {
+      fontSize: "1.3rem",
       // backgroundColor: 'green',
     },
   },
   button: {
-    fontWeight: '500',
-    margin: '5px',
-    color: 'white',
-    '& a': {
-      color: 'black',
+    fontWeight: "500",
+    margin: "5px",
+    color: "white",
+    "& a": {
+      color: "black",
     },
-    padding: '.2rem',
-    textDecoration: 'none',
-    [theme.breakpoints.down('sm')]: {
-      fontSize: '.8rem',
+    padding: ".2rem",
+    textDecoration: "none",
+    [theme.breakpoints.down("sm")]: {
+      fontSize: ".8rem",
       // backgroundColor: 'purple',
     },
-    [theme.breakpoints.up('md')]: {
-      fontSize: '1rem',
+    [theme.breakpoints.up("md")]: {
+      fontSize: "1rem",
     },
-    [theme.breakpoints.up('lg')]: {
-      fontSize: '1.3rem',
+    [theme.breakpoints.up("lg")]: {
+      fontSize: "1.3rem",
       // backgroundColor: 'green',
     },
   },
   buttonMenu: {
-    fontWeight: '500',
-    margin: '5px',
-    color: 'white',
-    padding: '.2rem',
-    textDecoration: 'none',
-    [theme.breakpoints.down('sm')]: {
-      fontSize: '.8rem',
+    fontWeight: "500",
+    margin: "5px",
+    color: "white",
+    padding: ".2rem",
+    textDecoration: "none",
+    [theme.breakpoints.down("sm")]: {
+      fontSize: ".8rem",
       // backgroundColor: 'purple',
     },
-    [theme.breakpoints.up('md')]: {
-      fontSize: '1rem',
+    [theme.breakpoints.up("md")]: {
+      fontSize: "1rem",
     },
-    [theme.breakpoints.up('lg')]: {
-      fontSize: '1.3rem',
+    [theme.breakpoints.up("lg")]: {
+      fontSize: "1.3rem",
       // backgroundColor: 'green',
     },
   },
   smallText: {
     marginLeft: theme.spacing(1),
-    fontWeight: '500',
-    [theme.breakpoints.down('sm')]: {
-      fontSize: '.8rem',
+    fontWeight: "500",
+    [theme.breakpoints.down("sm")]: {
+      fontSize: ".8rem",
       // backgroundColor: 'purple',
     },
-    [theme.breakpoints.up('md')]: {
-      fontSize: '1rem',
+    [theme.breakpoints.up("md")]: {
+      fontSize: "1rem",
     },
-    [theme.breakpoints.up('lg')]: {
-      fontSize: '1.3rem',
+    [theme.breakpoints.up("lg")]: {
+      fontSize: "1.3rem",
       // backgroundColor: 'green',
     },
   },
   smallLink: {
-    fontWeight: '500',
-    color: 'white',
-    [theme.breakpoints.down('sm')]: {
-      fontSize: '.8rem',
+    fontWeight: "500",
+    color: "white",
+    [theme.breakpoints.down("sm")]: {
+      fontSize: ".8rem",
       // backgroundColor: 'purple',
     },
-    [theme.breakpoints.up('md')]: {
-      fontSize: '1rem',
+    [theme.breakpoints.up("md")]: {
+      fontSize: "1rem",
     },
-    [theme.breakpoints.up('lg')]: {
-      fontSize: '1.3rem',
+    [theme.breakpoints.up("lg")]: {
+      fontSize: "1.3rem",
       // backgroundColor: 'green',
     },
   },
   pageTitle: {
-    marginLeft: '10%',
-    fontWeight: '500',
-    textDecoration: 'none',
+    marginLeft: "10%",
+    fontWeight: "500",
+    textDecoration: "none",
     // variant: 'h2',
-    [theme.breakpoints.down('sm')]: {
-      fontSize: '1rem',
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "1rem",
       // backgroundColor: 'purple',
     },
-    [theme.breakpoints.up('md')]: {
-      fontSize: '1.3rem',
+    [theme.breakpoints.up("md")]: {
+      fontSize: "1.3rem",
     },
-    [theme.breakpoints.up('lg')]: {
-      fontSize: '1.7rem',
+    [theme.breakpoints.up("lg")]: {
+      fontSize: "1.7rem",
       // backgroundColor: 'green',
     },
   },
   accountDisplay: {
-    marginRight: '10%',
+    marginRight: "10%",
   },
   root: {
     // ...theme.typography.button,
     // display: 'inline-block',
     // backgroundColor: theme.palette.background.paper,
     // padding: theme.spacing(1),
-    fontWeight: '500',
+    fontWeight: "500",
     // variant: 'h2',
-    [theme.breakpoints.down('sm')]: {
-      fontSize: '1rem',
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "1rem",
       // backgroundColor: 'purple',
     },
-    [theme.breakpoints.up('md')]: {
-      fontSize: '1.3rem',
+    [theme.breakpoints.up("md")]: {
+      fontSize: "1.3rem",
     },
-    [theme.breakpoints.up('lg')]: {
-      fontSize: '1.7rem',
+    [theme.breakpoints.up("lg")]: {
+      fontSize: "1.7rem",
       // backgroundColor: 'green',
     },
   },
@@ -163,6 +163,7 @@ export default function Nav({ base64Img, loggedIn, data, revalidate }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [newData, setNewData] = useState();
   const classes = useStyles();
+  const [controle, setControle] = useState();
 
   // const { data, revalidate } = useSWR('/api/me', async function (args) {
   //   const res = await fetch(args);
@@ -200,12 +201,12 @@ export default function Nav({ base64Img, loggedIn, data, revalidate }) {
       // console.log(e);
       return e !== undefined;
     });
-    return finalFilter ? finalFilter[0] : '';
+    return finalFilter ? finalFilter[0] : "";
   };
 
   useEffect(() => {
     setNewData(useFilter());
-  }, [data.email]);
+  }, [loggedIn]);
 
   // console.log(newData);
 
@@ -235,7 +236,7 @@ export default function Nav({ base64Img, loggedIn, data, revalidate }) {
           alignItems="center"
           className={classes.accountDisplay}
         >
-          <Button
+          {/* <Button
             variant="outlined"
             color="primary"
             className={classes.whiteButton}
@@ -243,11 +244,31 @@ export default function Nav({ base64Img, loggedIn, data, revalidate }) {
             <Link href="/login" passHref>
               <a className={classes.whiteButton}>LogIn</a>
             </Link>
-          </Button>
+          </Button> */}
+          <Link href="/login" passHref>
+            <Button
+              className={classes.whiteButton}
+              component="a"
+              variant="outlined"
+              color="primary"
+            >
+              Login
+            </Button>
+          </Link>
           <Typography color="primary" className={classes.root}>
             ou
           </Typography>
-          <Button
+          <Link href="/signup" passHref>
+            <Button
+              className={classes.whiteButton}
+              component="a"
+              variant="outlined"
+              color="primary"
+            >
+              Sign Up
+            </Button>
+          </Link>
+          {/* <Button
             color="primary"
             variant="outlined"
             className={classes.whiteButton}
@@ -255,7 +276,7 @@ export default function Nav({ base64Img, loggedIn, data, revalidate }) {
             <Link href="/signup" passHref>
               <a className={classes.whiteButton}>Sign Up</a>
             </Link>
-          </Button>
+          </Button> */}
         </Box>
       )}
       {loggedIn && (
@@ -292,9 +313,11 @@ export default function Nav({ base64Img, loggedIn, data, revalidate }) {
                 // color="primary"
                 variant="outlined"
                 className={classes.button}
+                // onClick={logOut()}
                 onClick={() => {
-                  cookie.remove('token');
+                  cookie.remove("token");
                   revalidate();
+                  Router.push("/");
                 }}
               >
                 <a className={classes.button}>Log Out</a>

@@ -461,336 +461,21 @@ const profile = ({ dados }) => {
         Perfil
       </Nav>
       {!loggedIn && <NotLogged />}
-      {loggedIn && finalBase64Src().type === "999" ? (
+      {loggedIn && finalBase64Src().type === "1" && (
+        <NewComponent
+          loggedIn={loggedIn}
+          data={data}
+          revalidate={revalidate}
+          dados={dados}
+        />
+      )}
+      {loggedIn && finalBase64Src().type === "999" && (
         <AdminProfile
           loggedIn={loggedIn}
           data={data}
           revalidate={revalidate}
           dados={dados}
         ></AdminProfile>
-      ) : (
-        // <Container className={classes.loggedInBox}>
-        //   <Box className={classes.loggedFormBox}>
-        //     <Typography variant="h6" className={classes.textSize}>
-        //       Preencha o formulario se você desejar editar ou excluir algum
-        //       usuario
-        //     </Typography>
-        //     <form
-        //       className={classes.root}
-        //       onSubmit={(e) => handleSubmit(e)}
-        //       autoComplete="off"
-        //     >
-        //       <FormControl
-        //         component="fieldset"
-        //         className={classes.inputComponent}
-        //       >
-        //         <TextField
-        //           label="UserID"
-        //           variant="filled"
-        //           inputRef={ref}
-        //           required
-        //           error={errorText.userId}
-        //           helperText={errorText.textUserId}
-        //           // value={formData.userId}
-        //           // onChange={(e) => setFormData({ userId: e.target.value })}
-        //           onBlur={(e) => userIdCheck(e)}
-        //         />
-        //       </FormControl>
-        //       <FormControl
-        //         component="fieldset"
-        //         className={classes.inputComponent}
-        //       >
-        //         <TextField
-        //           label="Nome"
-        //           variant="filled"
-        //           value={formData.name}
-        //           required
-        //           onChange={(e) =>
-        //             setFormData((prevState) => ({
-        //               ...prevState,
-        //               name: e.target.value,
-        //             }))
-        //           }
-        //         />
-        //       </FormControl>
-        //       <FormControl
-        //         component="fieldset"
-        //         className={classes.inputComponent}
-        //       >
-        //         <TextField
-        //           label="Email"
-        //           type="email"
-        //           required
-        //           variant="filled"
-        //           value={formData.email}
-        //           onChange={(e) =>
-        //             setFormData((prevState) => ({
-        //               ...prevState,
-        //               email: e.target.value,
-        //             }))
-        //           }
-        //         />
-        //       </FormControl>
-        //       <FormControl
-        //         component="fieldset"
-        //         className={classes.inputComponent}
-        //       >
-        //         <TextField
-        //           label="CPF"
-        //           variant="filled"
-        //           InputProps={{
-        //             inputComponent: TextMaskCustom,
-        //             value: formData.cpf,
-        //             // value: this.state.textmask,
-        //             // onChange: this.handleChange('textmask'),
-        //             onBlur: (e) => errorCheck(e.target.value),
-        //             onChange: (e) =>
-        //               setFormData((prevState) => ({
-        //                 ...prevState,
-        //                 cpf: e.target.value,
-        //               })),
-        //           }}
-        //           required
-        //           error={errorText.cpf}
-        //           helperText={errorText.textCpf}
-        //           // }
-        //         />
-        //       </FormControl>
-        //       <FormControl
-        //         component="fieldset"
-        //         className={classes.inputComponent}
-        //       >
-        //         <InputLabel id="demo-simple-select-label">Nivel</InputLabel>
-        //         <Select
-        //           labelId="demo-simple-select-label"
-        //           id="demo-simple-select"
-        //           value={formData.type}
-        //           onChange={(e) =>
-        //             setFormData((prevState) => ({
-        //               ...prevState,
-        //               type: e.target.value,
-        //             }))
-        //           }
-        //         >
-        //           <MenuItem value={'1'}>Usuario Comum</MenuItem>
-        //           <MenuItem value={'999'}>Admin</MenuItem>
-        //         </Select>
-        //       </FormControl>
-        //       <div className={classes.teste}>
-        //         <FormControl
-        //           component="fieldset"
-        //           className={classes.inputComponent}
-        //           // id="grid"
-        //         >
-        //           <RadioGroup
-        //             row
-        //             // className={classes.radioButton}
-        //             aria-label="position"
-        //             name="position"
-        //             value={formData.active}
-        //             onChange={(e) =>
-        //               setFormData((prevState) => ({
-        //                 ...prevState,
-        //                 active: e.target.value,
-        //               }))
-        //             }
-        //           >
-        //             <FormControlLabel
-        //               value="1"
-        //               control={<Radio color="primary" />}
-        //               label="Ativado"
-        //               labelPlacement="start"
-        //             />
-        //             <FormControlLabel
-        //               value="0"
-        //               control={<Radio color="primary" />}
-        //               label="Desativado"
-        //               labelPlacement="start"
-        //             />
-        //           </RadioGroup>
-        //         </FormControl>
-        //         <div className={classes.buttonsWrapper}>
-        //           <Button
-        //             type="submit"
-        //             variant="contained"
-        //             className={classes.buttonError}
-        //             onClick={(e) => handleDelete(e)}
-        //           >
-        //             Deletar
-        //           </Button>
-        //           <Button variant="contained" onClick={(e) => handleCancel(e)}>
-        //             Cancelar
-        //           </Button>
-        //           <Button
-        //             type="submit"
-        //             variant="contained"
-        //             color="primary"
-        //             // disabled={formData.userId ? false : true}
-        //           >
-        //             Enviar
-        //           </Button>
-        //         </div>
-        //       </div>
-        //     </form>
-        //     {patchSuccess && (
-        //       <Alert className={classes.alertMargin} severity="success">
-        //         {patchSuccess}
-        //       </Alert>
-        //     )}
-        //     {patchError && (
-        //       <Alert className={classes.alertMargin} severity="error">
-        //         {patchError}
-        //       </Alert>
-        //     )}
-        //   </Box>
-        //   <Box className={classes.loggedInContainer}>
-        //     <TableContainer component={Paper}>
-        //       <Table
-        //         className={classes.table}
-        //         size="small"
-        //         aria-label="a dense table"
-        //       >
-        //         <TableHead>
-        //           <TableRow>
-        //             <TableCell>UserID</TableCell>
-        //             <TableCell align="right">Nome</TableCell>
-        //             <TableCell align="right">Email</TableCell>
-        //             <TableCell align="right">CPF</TableCell>
-        //             <TableCell align="right">Nivel de Acesso</TableCell>
-        //             <TableCell align="right">Ativo</TableCell>
-        //           </TableRow>
-        //         </TableHead>
-        //         <TableBody>
-        //           {dados?.map((row) => (
-        //             <TableRow key={row.userId}>
-        //               <TableCell component="th" scope="row">
-        //                 {row.userId}
-        //               </TableCell>
-        //               <TableCell align="right">{row.name}</TableCell>
-        //               <TableCell align="right">{row.email}</TableCell>
-        //               <TableCell align="right">{row.cpf}</TableCell>
-        //               <TableCell align="right">{row.type}</TableCell>
-        //               <TableCell align="right">
-        //                 {row.active === '1' ? 'Ativo' : 'Desativado'}
-        //               </TableCell>
-        //             </TableRow>
-        //           ))}
-        //         </TableBody>
-        //       </Table>
-        //     </TableContainer>
-        //   </Box>
-        // </Container>
-        <NewComponent
-          loggedIn={loggedIn}
-          data={data}
-          revalidate={revalidate}
-          dados={dados}
-        ></NewComponent>
-        // <Container className={classes.normalUserLoggedInBox}>
-        //   <Box className={classes.normalUserBox}>
-        //     <Box className={classes.newBoxTest} spacing={3}>
-        //       <Box
-        //         // item xs={6}
-        //         className={classes.normalUserElement}
-        //       >
-        //         <img
-        //           width="60%"
-        //           className={classes.profilePicture}
-        //           // layout="responsive"
-        //           src={
-        //             finalBase64Src() ? finalBase64Src().base64 : '/default.png'
-        //           }
-        //         />
-        //       </Box>
-        //       <Box
-        //         // item xs={6}
-        //         className={classes.normalUserElement}
-        //       >
-        //         <form
-        //           className={classes.root}
-        //           onSubmit={(e) => handleSubmit(e)}
-        //           autoComplete="off"
-        //         >
-        //           <FormControl
-        //             component="fieldset"
-        //             className={classes.inputComponent}
-        //           >
-        //             <TextField
-        //               label="Nome"
-        //               value={formData.name}
-        //               required
-        //               onChange={(e) =>
-        //                 setFormData((prevState) => ({
-        //                   ...prevState,
-        //                   name: e.target.value,
-        //                 }))
-        //               }
-        //             />
-        //           </FormControl>
-        //           <FormControl
-        //             component="fieldset"
-        //             className={classes.inputComponent}
-        //           >
-        //             <TextField
-        //               label="Email"
-        //               type="email"
-        //               required
-        //               // value={newTest.email}
-        //               onChange={(e) =>
-        //                 setNewTest((prevState) => ({
-        //                   ...prevState,
-        //                   email: e.target.value,
-        //                 }))
-        //               }
-        //             />
-        //           </FormControl>
-        //           <FormControl
-        //             component="fieldset"
-        //             className={classes.inputComponent}
-        //           >
-        //             <TextField
-        //               label="CPF"
-        //               InputProps={{
-        //                 inputComponent: TextMaskCustom,
-        //                 value: formData.cpf,
-        //                 // value: this.state.textmask,
-        //                 // onChange: this.handleChange('textmask'),
-        //                 onBlur: (e) => errorCheck(e.target.value),
-        //                 onChange: (e) =>
-        //                   setFormData((prevState) => ({
-        //                     ...prevState,
-        //                     cpf: e.target.value,
-        //                   })),
-        //               }}
-        //               required
-        //               error={errorText.cpf}
-        //               helperText={errorText.textCpf}
-        //               // }
-        //             />
-        //           </FormControl>
-        //           <div className={classes.teste}>
-        //             <div className={classes.buttonsWrapper}>
-        //               <Button
-        //                 variant="contained"
-        //                 onClick={(e) => handleCancel(e)}
-        //               >
-        //                 Cancelar
-        //               </Button>
-        //               <Button
-        //                 type="submit"
-        //                 variant="contained"
-        //                 color="primary"
-        //                 // disabled={formData.userId ? false : true}
-        //               >
-        //                 Enviar
-        //               </Button>
-        //             </div>
-        //           </div>
-        //         </form>
-        //       </Box>
-        //     </Box>
-        //   </Box>
-        // </Container>
       )}
     </Box>
   );
@@ -807,3 +492,320 @@ export const getServerSideProps = async (ctx) => {
     },
   };
 };
+
+// <Container className={classes.loggedInBox}>
+//   <Box className={classes.loggedFormBox}>
+//     <Typography variant="h6" className={classes.textSize}>
+//       Preencha o formulario se você desejar editar ou excluir algum
+//       usuario
+//     </Typography>
+//     <form
+//       className={classes.root}
+//       onSubmit={(e) => handleSubmit(e)}
+//       autoComplete="off"
+//     >
+//       <FormControl
+//         component="fieldset"
+//         className={classes.inputComponent}
+//       >
+//         <TextField
+//           label="UserID"
+//           variant="filled"
+//           inputRef={ref}
+//           required
+//           error={errorText.userId}
+//           helperText={errorText.textUserId}
+//           // value={formData.userId}
+//           // onChange={(e) => setFormData({ userId: e.target.value })}
+//           onBlur={(e) => userIdCheck(e)}
+//         />
+//       </FormControl>
+//       <FormControl
+//         component="fieldset"
+//         className={classes.inputComponent}
+//       >
+//         <TextField
+//           label="Nome"
+//           variant="filled"
+//           value={formData.name}
+//           required
+//           onChange={(e) =>
+//             setFormData((prevState) => ({
+//               ...prevState,
+//               name: e.target.value,
+//             }))
+//           }
+//         />
+//       </FormControl>
+//       <FormControl
+//         component="fieldset"
+//         className={classes.inputComponent}
+//       >
+//         <TextField
+//           label="Email"
+//           type="email"
+//           required
+//           variant="filled"
+//           value={formData.email}
+//           onChange={(e) =>
+//             setFormData((prevState) => ({
+//               ...prevState,
+//               email: e.target.value,
+//             }))
+//           }
+//         />
+//       </FormControl>
+//       <FormControl
+//         component="fieldset"
+//         className={classes.inputComponent}
+//       >
+//         <TextField
+//           label="CPF"
+//           variant="filled"
+//           InputProps={{
+//             inputComponent: TextMaskCustom,
+//             value: formData.cpf,
+//             // value: this.state.textmask,
+//             // onChange: this.handleChange('textmask'),
+//             onBlur: (e) => errorCheck(e.target.value),
+//             onChange: (e) =>
+//               setFormData((prevState) => ({
+//                 ...prevState,
+//                 cpf: e.target.value,
+//               })),
+//           }}
+//           required
+//           error={errorText.cpf}
+//           helperText={errorText.textCpf}
+//           // }
+//         />
+//       </FormControl>
+//       <FormControl
+//         component="fieldset"
+//         className={classes.inputComponent}
+//       >
+//         <InputLabel id="demo-simple-select-label">Nivel</InputLabel>
+//         <Select
+//           labelId="demo-simple-select-label"
+//           id="demo-simple-select"
+//           value={formData.type}
+//           onChange={(e) =>
+//             setFormData((prevState) => ({
+//               ...prevState,
+//               type: e.target.value,
+//             }))
+//           }
+//         >
+//           <MenuItem value={'1'}>Usuario Comum</MenuItem>
+//           <MenuItem value={'999'}>Admin</MenuItem>
+//         </Select>
+//       </FormControl>
+//       <div className={classes.teste}>
+//         <FormControl
+//           component="fieldset"
+//           className={classes.inputComponent}
+//           // id="grid"
+//         >
+//           <RadioGroup
+//             row
+//             // className={classes.radioButton}
+//             aria-label="position"
+//             name="position"
+//             value={formData.active}
+//             onChange={(e) =>
+//               setFormData((prevState) => ({
+//                 ...prevState,
+//                 active: e.target.value,
+//               }))
+//             }
+//           >
+//             <FormControlLabel
+//               value="1"
+//               control={<Radio color="primary" />}
+//               label="Ativado"
+//               labelPlacement="start"
+//             />
+//             <FormControlLabel
+//               value="0"
+//               control={<Radio color="primary" />}
+//               label="Desativado"
+//               labelPlacement="start"
+//             />
+//           </RadioGroup>
+//         </FormControl>
+//         <div className={classes.buttonsWrapper}>
+//           <Button
+//             type="submit"
+//             variant="contained"
+//             className={classes.buttonError}
+//             onClick={(e) => handleDelete(e)}
+//           >
+//             Deletar
+//           </Button>
+//           <Button variant="contained" onClick={(e) => handleCancel(e)}>
+//             Cancelar
+//           </Button>
+//           <Button
+//             type="submit"
+//             variant="contained"
+//             color="primary"
+//             // disabled={formData.userId ? false : true}
+//           >
+//             Enviar
+//           </Button>
+//         </div>
+//       </div>
+//     </form>
+//     {patchSuccess && (
+//       <Alert className={classes.alertMargin} severity="success">
+//         {patchSuccess}
+//       </Alert>
+//     )}
+//     {patchError && (
+//       <Alert className={classes.alertMargin} severity="error">
+//         {patchError}
+//       </Alert>
+//     )}
+//   </Box>
+//   <Box className={classes.loggedInContainer}>
+//     <TableContainer component={Paper}>
+//       <Table
+//         className={classes.table}
+//         size="small"
+//         aria-label="a dense table"
+//       >
+//         <TableHead>
+//           <TableRow>
+//             <TableCell>UserID</TableCell>
+//             <TableCell align="right">Nome</TableCell>
+//             <TableCell align="right">Email</TableCell>
+//             <TableCell align="right">CPF</TableCell>
+//             <TableCell align="right">Nivel de Acesso</TableCell>
+//             <TableCell align="right">Ativo</TableCell>
+//           </TableRow>
+//         </TableHead>
+//         <TableBody>
+//           {dados?.map((row) => (
+//             <TableRow key={row.userId}>
+//               <TableCell component="th" scope="row">
+//                 {row.userId}
+//               </TableCell>
+//               <TableCell align="right">{row.name}</TableCell>
+//               <TableCell align="right">{row.email}</TableCell>
+//               <TableCell align="right">{row.cpf}</TableCell>
+//               <TableCell align="right">{row.type}</TableCell>
+//               <TableCell align="right">
+//                 {row.active === '1' ? 'Ativo' : 'Desativado'}
+//               </TableCell>
+//             </TableRow>
+//           ))}
+//         </TableBody>
+//       </Table>
+//     </TableContainer>
+//   </Box>
+// </Container>
+// <Container className={classes.normalUserLoggedInBox}>
+//   <Box className={classes.normalUserBox}>
+//     <Box className={classes.newBoxTest} spacing={3}>
+//       <Box
+//         // item xs={6}
+//         className={classes.normalUserElement}
+//       >
+//         <img
+//           width="60%"
+//           className={classes.profilePicture}
+//           // layout="responsive"
+//           src={
+//             finalBase64Src() ? finalBase64Src().base64 : '/default.png'
+//           }
+//         />
+//       </Box>
+//       <Box
+//         // item xs={6}
+//         className={classes.normalUserElement}
+//       >
+//         <form
+//           className={classes.root}
+//           onSubmit={(e) => handleSubmit(e)}
+//           autoComplete="off"
+//         >
+//           <FormControl
+//             component="fieldset"
+//             className={classes.inputComponent}
+//           >
+//             <TextField
+//               label="Nome"
+//               value={formData.name}
+//               required
+//               onChange={(e) =>
+//                 setFormData((prevState) => ({
+//                   ...prevState,
+//                   name: e.target.value,
+//                 }))
+//               }
+//             />
+//           </FormControl>
+//           <FormControl
+//             component="fieldset"
+//             className={classes.inputComponent}
+//           >
+//             <TextField
+//               label="Email"
+//               type="email"
+//               required
+//               // value={newTest.email}
+//               onChange={(e) =>
+//                 setNewTest((prevState) => ({
+//                   ...prevState,
+//                   email: e.target.value,
+//                 }))
+//               }
+//             />
+//           </FormControl>
+//           <FormControl
+//             component="fieldset"
+//             className={classes.inputComponent}
+//           >
+//             <TextField
+//               label="CPF"
+//               InputProps={{
+//                 inputComponent: TextMaskCustom,
+//                 value: formData.cpf,
+//                 // value: this.state.textmask,
+//                 // onChange: this.handleChange('textmask'),
+//                 onBlur: (e) => errorCheck(e.target.value),
+//                 onChange: (e) =>
+//                   setFormData((prevState) => ({
+//                     ...prevState,
+//                     cpf: e.target.value,
+//                   })),
+//               }}
+//               required
+//               error={errorText.cpf}
+//               helperText={errorText.textCpf}
+//               // }
+//             />
+//           </FormControl>
+//           <div className={classes.teste}>
+//             <div className={classes.buttonsWrapper}>
+//               <Button
+//                 variant="contained"
+//                 onClick={(e) => handleCancel(e)}
+//               >
+//                 Cancelar
+//               </Button>
+//               <Button
+//                 type="submit"
+//                 variant="contained"
+//                 color="primary"
+//                 // disabled={formData.userId ? false : true}
+//               >
+//                 Enviar
+//               </Button>
+//             </div>
+//           </div>
+//         </form>
+//       </Box>
+//     </Box>
+//   </Box>
+// </Container>

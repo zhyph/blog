@@ -143,6 +143,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexWrap: "wrap",
     justifyContent: "center",
+    marginBottom: theme.spacing(1),
     // display: 'grid',
     // placeItems: 'center',
     // gridTemplateColumns: 'repeat(5, 1fr)',
@@ -176,14 +177,14 @@ const useStyles = makeStyles((theme) => ({
       width: "60%",
     },
   },
-  alertMargin: { marginTop: theme.spacing(2) },
+  alertMargin: { margin: theme.spacing(2) },
   buttonError: { backgroundColor: "red" },
   profilePicture: {
     borderRadius: "100%",
   },
 }));
 
-function TextMaskCustom(props) {
+export function TextMaskCustom(props) {
   const { inputRef, ...other } = props;
 
   return (
@@ -280,13 +281,14 @@ function AdminProfile({ loggedIn, data, revalidate, dados }) {
   };
 
   const errorCheck = (value) => {
+    const newCpf = formData.cpf.replace(/[^0-9]/g, "");
     if (value.length === 0) {
       setErrorText((prevState) => ({
         ...prevState,
         textCpf: "",
         cpf: false,
       }));
-    } else if (value.length < 11 || value.length > 14) {
+    } else if (newCpf.length < 11) {
       setErrorText((prevState) => ({
         ...prevState,
         textCpf: "CPF Invalido",
@@ -300,6 +302,8 @@ function AdminProfile({ loggedIn, data, revalidate, dados }) {
       }));
     }
   };
+
+  console.log(formData.cpf.length);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
