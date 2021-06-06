@@ -38,7 +38,6 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down("sm")]: {
       maxHeight: "300px",
       maxWidth: "600px",
-      // backgroundColor: 'purple',
     },
   },
   notLoggedInBox: {
@@ -58,11 +57,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Home({ dados }) {
-  // console.log(dados);
-  // const [files, setFiles] = useState([]);
-  // const [base64Img, setBase64Img] = useState();
-  // const [newData, setNewData] = useState();
-  // const [res, setRes] = useState();
 
   const classes = useStyles();
   const { data, revalidate } = useSWR(
@@ -85,7 +79,6 @@ function Home({ dados }) {
       }
     });
     const finalFilter = base64Array?.filter((e) => {
-      // console.log(e);
       return e !== undefined;
     });
     return finalFilter ? finalFilter[0] : "";
@@ -102,8 +95,6 @@ function Home({ dados }) {
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
 
-      {/* <FileBase64 multiple={false} onDone={(e) => getFiles(e)} /> */}
-
       <Nav
         loggedIn={loggedIn}
         data={data}
@@ -113,18 +104,6 @@ function Home({ dados }) {
       {finalBase64Src()?.active === "0" && <NotLogged />}
       {!loggedIn && (
         <NotLogged></NotLogged>
-        // <Box className={classes.notLoggedInBox}>
-        //   <Container maxWidth="md" className={classes.notLoggedInContainer}>
-        //     <Typography
-        //       variant="h3"
-        //       color="textPrimary"
-        //       align="center"
-        //       className={classes.notLoggedInText}
-        //     >
-        //       Você precisa fazer Log In ou Sign Up para ver o conteudo
-        //     </Typography>
-        //   </Container>
-        // </Box>
       )}
     </Box>
   );
@@ -141,71 +120,3 @@ export const getServerSideProps = async (ctx) => {
     },
   };
 };
-
-{
-  /* <Box
-        width="100%"
-        // height="30%"
-        bgcolor="black"
-        display="flex"
-        justifyContent="space-around"
-        alignItems="center"
-      >
-        <Typography color="primary" className={classes.root}>
-          BLOG
-        </Typography>
-        {!loggedIn && (
-          <Box display="flex" flexDirection="row" alignItems="center">
-            <Button
-              variant="outlined"
-              color="primary"
-              className={classes.button}
-            >
-              <Link href="/login" passHref>
-                <a className={classes.button}>LogIn</a>
-              </Link>
-            </Button>
-            <Typography color="primary" className={classes.root}>
-              ou
-            </Typography>
-            <Button
-              color="primary"
-              variant="outlined"
-              className={classes.button}
-            >
-              <Link href="/signup" passHref>
-                <a className={classes.button}>Sign Up</a>
-              </Link>
-            </Button>
-          </Box>
-        )} */
-}
-
-{
-  /* </Box> */
-}
-
-{
-  /* {loggedIn && (
-        <>
-          <p>Welcome {data.email}!</p>
-          <button
-            onClick={() => {
-              cookie.remove('token');
-              revalidate();
-            }}
-          >
-            Logout
-          </button>
-        </>
-      )} */
-}
-{
-  /* {!loggedIn && (
-        <>
-          <Link href="/login">Login</Link>
-          <p>or</p>
-          <Link href="/signup">Sign Up</Link>
-        </>
-      )} */
-}
