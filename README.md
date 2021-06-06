@@ -1,5 +1,7 @@
 # Projeto "Blog" feito com NextJS + MaterialUI e MongoDB
 
+Antes de qualquer coisa você pode acessar o website por ![aqui](https://blog-zhyph.vercel.app/), ele esta sendo hosteado pela vercel.
+
 ## Breve descrição
 
 Esse projeto foi feito para o Processo Seletivo da Mind Consulting e utiliza inteiramente NextJS, um framework do ReactJS.
