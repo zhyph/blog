@@ -1,22 +1,8 @@
 import Head from "next/head";
 import fetch from "isomorphic-unfetch";
 import useSWR from "swr";
-import Link from "next/link";
-import cookie from "js-cookie";
-import { NextPage } from "next";
-import { useEffect, useState } from "react";
-import FileBase64 from "react-file-base64";
-import {
-  Box,
-  makeStyles,
-  Typography,
-  Button,
-  Menu,
-  MenuItem,
-  Container,
-} from "@material-ui/core";
+import { Box, makeStyles } from "@material-ui/core";
 import Nav from "../components/Nav";
-import axios from "axios";
 import NotLogged from "../components/NotLogged";
 import { server } from "../config";
 
@@ -30,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
     width: "70%",
     display: "grid",
     placeItems: "center",
-    // paddingTop: '1rem',
+
     [theme.breakpoints.down("md")]: {
       maxHeight: "660px",
       maxWidth: "960px",
@@ -57,7 +43,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Home({ dados }) {
-
   const classes = useStyles();
   const { data, revalidate } = useSWR(
     `${server}/api/me`,
@@ -102,9 +87,7 @@ function Home({ dados }) {
         base64Img={dados}
       />
       {finalBase64Src()?.active === "0" && <NotLogged />}
-      {!loggedIn && (
-        <NotLogged></NotLogged>
-      )}
+      {!loggedIn && <NotLogged></NotLogged>}
     </Box>
   );
 }

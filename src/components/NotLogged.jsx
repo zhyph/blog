@@ -1,39 +1,38 @@
-import { Box, Container, makeStyles, Typography } from '@material-ui/core';
-import React from 'react';
+import { Box, Container, makeStyles, Typography } from "@material-ui/core";
+import React from "react";
 
 const useStyles = makeStyles((theme) => ({
   body: {
-    backgroundColor: 'grey',
+    backgroundColor: "grey",
   },
   notLoggedInContainer: {
-    backgroundColor: 'white',
-    height: '70%',
-    width: '70%',
-    display: 'grid',
-    placeItems: 'center',
-    // paddingTop: '1rem',
-    [theme.breakpoints.down('md')]: {
-      maxHeight: '660px',
-      maxWidth: '960px',
+    backgroundColor: "white",
+    height: "70%",
+    width: "70%",
+    display: "grid",
+    placeItems: "center",
+
+    [theme.breakpoints.down("md")]: {
+      maxHeight: "660px",
+      maxWidth: "960px",
     },
-    [theme.breakpoints.down('sm')]: {
-      maxHeight: '300px',
-      maxWidth: '600px',
-      // backgroundColor: 'purple',
+    [theme.breakpoints.down("sm")]: {
+      maxHeight: "300px",
+      maxWidth: "600px",
     },
   },
   notLoggedInBox: {
-    height: '90vh',
-    width: '100%',
-    display: 'grid',
-    placeItems: 'center',
+    height: "90vh",
+    width: "100%",
+    display: "grid",
+    placeItems: "center",
   },
   notLoggedInText: {
-    [theme.breakpoints.down('md')]: {
-      fontSize: '1.5rem',
+    [theme.breakpoints.down("md")]: {
+      fontSize: "1.5rem",
     },
-    [theme.breakpoints.down('sm')]: {
-      fontSize: '1rem',
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "1rem",
     },
   },
 }));

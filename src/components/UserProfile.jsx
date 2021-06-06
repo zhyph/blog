@@ -3,7 +3,6 @@ import {
   Box,
   makeStyles,
   Container,
-  FormControl,
   TextField,
   Button,
 } from "@material-ui/core";
@@ -12,13 +11,11 @@ import { server } from "../config";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-import Link from "next/link";
 import { Snackbar } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    // marginTop: theme.spacing(4),
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
@@ -32,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.secondary.main,
   },
   form: {
-    width: "100%", // Fix IE 11 issue.
+    width: "100%",
     marginLeft: theme.spacing(3),
     [theme.breakpoints.down("xs")]: {
       marginLeft: "0",
@@ -60,25 +57,18 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     marginBottom: theme.spacing(4),
     height: "100%",
-    // width: '100%',
   },
   normalUserElement: {
     display: "grid",
     placeItems: "center",
-    // marginBottom: theme.spacing(4),
+
     height: "50%",
-    // width: '100%',
   },
   loggedFormBox: {
     display: "grid",
     placeItems: "center",
   },
   loggedInContainer: {
-    // display: 'grid',
-    // placeItems: 'center',
-    // height: '70%',
-    // paddingTop: '1rem',
-    // marginBottom: theme.spacing(1),
     [theme.breakpoints.down("md")]: {
       maxHeight: "660px",
       maxWidth: "960px",
@@ -86,7 +76,6 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down("sm")]: {
       maxHeight: "300px",
       maxWidth: "600px",
-      // backgroundColor: 'purple',
     },
   },
   loggedInBox: {
@@ -107,9 +96,9 @@ const useStyles = makeStyles((theme) => ({
     height: "90%",
     width: "100%",
     display: "flex",
-    // alignItems: 'center',
+
     justifyContent: "center",
-    // flexDirection: 'row',
+
     marginTop: theme.spacing(3),
     [theme.breakpoints.down("md")]: {
       height: "100%",
@@ -118,33 +107,22 @@ const useStyles = makeStyles((theme) => ({
   inputComponent: {
     marginRight: theme.spacing(1),
     flex: "1 1 100px",
-    // marginBottom: theme.spacing(1),
+
     [theme.breakpoints.up("lg")]: {
-      // maxWidth: '960px',
       flex: "1 1 200px",
     },
     [theme.breakpoints.down("md")]: {
-      // maxWidth: '960px',
       flex: "1 1 150px",
     },
     [theme.breakpoints.down("sm")]: {
-      // maxWidth: '600px',
       flex: "1 1 80px",
-      // backgroundColor: 'purple',
     },
-    // ' & #grid': {
-    //   display: 'grid',
-    //   placeItems: 'center',
-    // },
   },
   root: {
     width: "100%",
     display: "flex",
     flexWrap: "wrap",
     justifyContent: "center",
-    // display: 'grid',
-    // placeItems: 'center',
-    // gridTemplateColumns: 'repeat(5, 1fr)',
   },
   textSize: {
     [theme.breakpoints.up("md")]: {
@@ -153,28 +131,14 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down("md")]: {
       fontSize: "1rem",
     },
-    // [theme.breakpoints.down('sm')]: {
-    //   fontSize: '.25rem',
-    //   // backgroundColor: 'purple',
-    // },
   },
   buttonsWrapper: {
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-evenly",
     width: "100%",
-    // paddingLeft: theme.spacing(2),
   },
-  // teste: {
-  //   display: "grid",
-  //   placeItems: "center",
-  //   [theme.breakpoints.up("md")]: {
-  //     width: "30%",
-  //   },
-  //   [theme.breakpoints.down("md")]: {
-  //     width: "60%",
-  //   },
-  // },
+
   alertMargin: { marginTop: theme.spacing(2) },
   buttonError: { backgroundColor: "red" },
   profilePicture: {
@@ -219,8 +183,6 @@ function TextMaskCustom(props) {
         /\d/,
         /\d/,
       ]}
-      // placeholderChar={'\u2000'}
-      // showMask
     />
   );
 }
@@ -257,18 +219,10 @@ function NewComponent({ dados, data, revalidate }) {
       }
     });
     const finalFilter = base64Array?.filter((e) => {
-      // console.log(e);
       return e !== undefined;
     });
     return finalFilter ? finalFilter[0] : "";
   };
-
-  // const handleChange = (e) => {
-  //   setFormData((prevState) => ({
-  //     ...prevState,
-  //     [e.target.name]: e.target.value,
-  //   }));
-  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -278,7 +232,6 @@ function NewComponent({ dados, data, revalidate }) {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
-        // 'Access-Control-Allow-Headers': '*',
       },
       body: JSON.stringify({
         userId: data.userId,
@@ -301,18 +254,13 @@ function NewComponent({ dados, data, revalidate }) {
           setPatchSucces(data.message);
           setOpen({ ...open, success: true });
         }
-        // if (data && data.token) {
-        //   //Set cookie
-        //   cookie.set('token', data.token, { expires: 2 });
-        //   Router.push('/');
-        // }
       });
     setEdit(true);
   };
 
   const handleChange = (e) => {
     const value = e.target.value;
-    // const teste = e.target.name;
+
     setFormData({ ...formData, [e.target.name]: value });
   };
 
@@ -375,7 +323,6 @@ function NewComponent({ dados, data, revalidate }) {
                 name="email"
                 type="email"
                 onChange={(e) => handleChange(e)}
-                // autoComplete="email"
               />
             </Grid>
             <Grid item xs={6}>
@@ -417,7 +364,6 @@ function NewComponent({ dados, data, revalidate }) {
               />
             </Grid>
             <Button
-              // fullWidth
               variant="contained"
               color="primary"
               className={classes.submit}
@@ -428,7 +374,6 @@ function NewComponent({ dados, data, revalidate }) {
             {!edit && (
               <Button
                 type="submit"
-                // fullWidth
                 variant="contained"
                 color="primary"
                 className={classes.submit}
@@ -466,110 +411,3 @@ function NewComponent({ dados, data, revalidate }) {
 }
 
 export default NewComponent;
-
-// <Container className={classes.normalUserLoggedInBox}>
-//   <Box className={classes.normalUserBox}>
-//     <Box className={classes.newBoxTest} spacing={3}>
-//       <Box
-//         // item xs={6}
-//         className={classes.normalUserElement}
-//       >
-//         <img
-//           width="60%"
-//           className={classes.profilePicture}
-//           // layout="responsive"
-//           src={finalBase64Src() ? finalBase64Src().base64 : "/default.png"}
-//         />
-//       </Box>
-//       <Box
-//         // item xs={6}
-//         className={classes.normalUserElement}
-//       >
-//         <form
-//           className={classes.root}
-//           onSubmit={(e) => handleSubmit(e)}
-//           autoComplete="off"
-//         >
-//           <FormControl
-//             component="fieldset"
-//             className={classes.inputComponent}
-//           >
-//             <TextField
-//               label="Nome"
-//               disabled={newBool}
-//               name="name"
-//               value={teste?.name}
-//               InputLabelProps={{ shrink: true }}
-//               required
-//               onChange={(e) => handleChange(e)}
-//             />
-//           </FormControl>
-//           <FormControl
-//             component="fieldset"
-//             className={classes.inputComponent}
-//           >
-//             <TextField
-//               label="Email"
-//               disabled={newBool}
-//               name="email"
-//               type="email"
-//               required
-//               value={teste?.email}
-//               onChange={(e) => handleChange(e)}
-//             />
-//           </FormControl>
-//           <FormControl
-//             component="fieldset"
-//             className={classes.inputComponent}
-//           >
-//             <TextField
-//               label="CPF"
-//               disabled={newBool}
-//               name="cpf"
-//               InputProps={{
-//                 inputComponent: TextMaskCustom,
-//                 value: teste?.cpf,
-//                 onChange: (e) => handleChange(e),
-//                 // value: this.state.textmask,
-//                 // onChange: this.handleChange('textmask'),
-//                 // onBlur: (e) => errorCheck(e.target.value),
-//               }}
-//               required
-//               // error={errorText.cpf}
-//               // helperText={errorText.textCpf}
-//               // }
-//             />
-//           </FormControl>
-//           <div className={classes.teste}>
-//             <div className={classes.buttonsWrapper}>
-//               {/* <Button variant="contained" onClick={(e) => handleCancel(e)}>
-//                 Cancelar
-//               </Button> */}
-//               <Button variant="contained" onClick={(e) => handleBool(e)}>
-//                 Editar
-//               </Button>
-//               <Button
-//                 type="submit"
-//                 variant="contained"
-//                 color="primary"
-//                 // disabled={formData.userId ? false : true}
-//               >
-//                 Enviar
-//               </Button>
-//             </div>
-//           </div>
-//         </form>
-//         {patchSuccess && (
-//           <Alert className={classes.alertMargin} severity="success">
-//             {patchSuccess}
-//           </Alert>
-//         )}
-//         {patchError && (
-//           <Alert className={classes.alertMargin} severity="error">
-//             {patchError}
-//           </Alert>
-//         )}
-//       </Box>
-//     </Box>
-//   </Box>
-// </Container>

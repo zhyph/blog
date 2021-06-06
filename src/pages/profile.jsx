@@ -1,47 +1,13 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import Nav from "../components/Nav";
 import Head from "next/head";
 import fetch from "isomorphic-unfetch";
 import useSWR from "swr";
-import Link from "next/link";
-import cookie from "js-cookie";
-import { NextPage } from "next";
-import { useEffect, useState } from "react";
-import FileBase64 from "react-file-base64";
-import {
-  Box,
-  makeStyles,
-  Container,
-  TableContainer,
-  TableBody,
-  TableRow,
-  TableCell,
-  TableHead,
-  withStyles,
-  Table,
-  InputLabel,
-  Input,
-  FormControl,
-  FormHelperText,
-  OutlinedInput,
-  RadioGroup,
-  FormControlLabel,
-  Radio,
-  TextField,
-  Button,
-  Select,
-  MenuItem,
-  Typography,
-  Grid,
-} from "@material-ui/core";
-import axios from "axios";
+import { Box, makeStyles } from "@material-ui/core";
 import NotLogged from "../components/NotLogged";
-import Paper from "@material-ui/core/Paper";
 import MaskedInput from "react-text-mask";
-import { Alert } from "@material-ui/lab";
-import Image from "next/image";
 import { server } from "../config";
-import NewComponent from "../components/NewComponent";
+import UserProfile from "../components/UserProfile";
 import AdminProfile from "../components/AdminProfile";
 
 const useStyles = makeStyles((theme) => ({
@@ -63,14 +29,12 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     marginBottom: theme.spacing(4),
     height: "100%",
-    // width: '100%',
   },
   normalUserElement: {
     display: "grid",
     placeItems: "center",
-    // marginBottom: theme.spacing(4),
+
     height: "50%",
-    // width: '100%',
   },
   loggedFormBox: {
     display: "grid",
@@ -84,7 +48,6 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down("sm")]: {
       maxHeight: "300px",
       maxWidth: "600px",
-      // backgroundColor: 'purple',
     },
   },
   loggedInBox: {
@@ -105,9 +68,9 @@ const useStyles = makeStyles((theme) => ({
     height: "90%",
     width: "100%",
     display: "flex",
-    // alignItems: 'center',
+
     justifyContent: "center",
-    // flexDirection: 'row',
+
     marginTop: theme.spacing(3),
     [theme.breakpoints.down("md")]: {
       height: "100%",
@@ -116,28 +79,22 @@ const useStyles = makeStyles((theme) => ({
   inputComponent: {
     marginRight: theme.spacing(1),
     flex: "1 1 100px",
-    // marginBottom: theme.spacing(1),
+
     [theme.breakpoints.up("lg")]: {
-      // maxWidth: '960px',
       flex: "1 1 200px",
     },
     [theme.breakpoints.down("md")]: {
-      // maxWidth: '960px',
       flex: "1 1 150px",
     },
     [theme.breakpoints.down("sm")]: {
-      // maxWidth: '600px',
       flex: "1 1 80px",
-      // backgroundColor: 'purple',
     },
-    
   },
   root: {
     width: "100%",
     display: "flex",
     flexWrap: "wrap",
     justifyContent: "center",
- 
   },
   textSize: {
     [theme.breakpoints.up("md")]: {
@@ -146,14 +103,12 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down("md")]: {
       fontSize: "1rem",
     },
-  
   },
   buttonsWrapper: {
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-evenly",
     width: "100%",
-    // paddingLeft: theme.spacing(2),
   },
   teste: {
     display: "grid",
@@ -197,8 +152,6 @@ function TextMaskCustom(props) {
         /\d/,
         /\d/,
       ]}
-      // placeholderChar={'\u2000'}
-      // showMask
     />
   );
 }
@@ -224,8 +177,6 @@ const profile = ({ dados }) => {
   const [patchError, setPatchError] = useState();
   const [patchSuccess, setPatchSucces] = useState();
 
-  //   const [newTest, setNewTest] = useState();
-  //   console.log(dados[0].type);
   const { data, revalidate } = useSWR(
     `${server}/api/me`,
     async function (args) {
@@ -246,24 +197,21 @@ const profile = ({ dados }) => {
       }
     });
     const finalFilter = base64Array?.filter((e) => {
-      // console.log(e);
       return e !== undefined;
     });
     return finalFilter ? finalFilter[0] : "";
   };
 
   const fetchUserData = (value) => {
-    // console.log(value);
     const userIdCheck = dados?.map((item) => {
       if (value === item.userId) {
         return item;
       }
     });
     const newFinalFilter = userIdCheck?.filter((e) => {
-      // console.log(e);
       return e !== undefined;
     });
-    // console.log(userIdCheck);
+
     setFormData((prevState) => ({
       ...prevState,
       name: newFinalFilter[0].name,
@@ -336,7 +284,6 @@ const profile = ({ dados }) => {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
-        // 'Access-Control-Allow-Headers': '*',
       },
       body: JSON.stringify({
         userId: formData.userId,
@@ -357,7 +304,6 @@ const profile = ({ dados }) => {
         if (data && !data.error && data.message) {
           setPatchSucces(data.message);
         }
-        
       });
     ref.current.value = "";
     setFormData({
@@ -377,7 +323,6 @@ const profile = ({ dados }) => {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
-        // 'Access-Control-Allow-Headers': '*',
       },
       body: JSON.stringify({
         userId: formData.userId,
@@ -393,7 +338,6 @@ const profile = ({ dados }) => {
         if (data && !data.error && data.message) {
           setPatchSucces(data.message);
         }
-       
       });
     ref.current.value = "";
     setFormData({
@@ -405,8 +349,6 @@ const profile = ({ dados }) => {
       active: "",
     });
   };
-
- 
 
   return (
     <Box height={"100vh"} width="auto" className={classes.body}>
@@ -424,7 +366,7 @@ const profile = ({ dados }) => {
       </Nav>
       {!loggedIn && <NotLogged />}
       {loggedIn && finalBase64Src().type === "1" && (
-        <NewComponent
+        <UserProfile
           loggedIn={loggedIn}
           data={data}
           revalidate={revalidate}

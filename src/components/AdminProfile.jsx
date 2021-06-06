@@ -1,13 +1,5 @@
-import React, { useRef } from "react";
-import Nav from "../components/Nav";
-import Head from "next/head";
+import React, { useRef, useState } from "react";
 import fetch from "isomorphic-unfetch";
-import useSWR from "swr";
-import Link from "next/link";
-import cookie from "js-cookie";
-import { NextPage } from "next";
-import { useEffect, useState } from "react";
-import FileBase64 from "react-file-base64";
 import {
   Box,
   makeStyles,
@@ -17,13 +9,9 @@ import {
   TableRow,
   TableCell,
   TableHead,
-  withStyles,
   Table,
   InputLabel,
-  Input,
   FormControl,
-  FormHelperText,
-  OutlinedInput,
   RadioGroup,
   FormControlLabel,
   Radio,
@@ -32,14 +20,10 @@ import {
   Select,
   MenuItem,
   Typography,
-  Grid,
 } from "@material-ui/core";
-import axios from "axios";
-import NotLogged from "../components/NotLogged";
 import Paper from "@material-ui/core/Paper";
 import MaskedInput from "react-text-mask";
 import { Alert } from "@material-ui/lab";
-import Image from "next/image";
 import { server } from "../config";
 
 const useStyles = makeStyles((theme) => ({
@@ -61,25 +45,18 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     marginBottom: theme.spacing(4),
     height: "100%",
-    // width: '100%',
   },
   normalUserElement: {
     display: "grid",
     placeItems: "center",
-    // marginBottom: theme.spacing(4),
+
     height: "50%",
-    // width: '100%',
   },
   loggedFormBox: {
     display: "grid",
     placeItems: "center",
   },
   loggedInContainer: {
-    // display: 'grid',
-    // placeItems: 'center',
-    // height: '70%',
-    // paddingTop: '1rem',
-    // marginBottom: theme.spacing(1),
     [theme.breakpoints.down("md")]: {
       maxHeight: "660px",
       maxWidth: "960px",
@@ -87,7 +64,6 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down("sm")]: {
       maxHeight: "300px",
       maxWidth: "600px",
-      // backgroundColor: 'purple',
     },
   },
   loggedInBox: {
@@ -108,9 +84,9 @@ const useStyles = makeStyles((theme) => ({
     height: "90%",
     width: "100%",
     display: "flex",
-    // alignItems: 'center',
+
     justifyContent: "center",
-    // flexDirection: 'row',
+
     marginTop: theme.spacing(3),
     [theme.breakpoints.down("md")]: {
       height: "100%",
@@ -119,24 +95,16 @@ const useStyles = makeStyles((theme) => ({
   inputComponent: {
     marginRight: theme.spacing(1),
     flex: "1 1 100px",
-    // marginBottom: theme.spacing(1),
+
     [theme.breakpoints.up("lg")]: {
-      // maxWidth: '960px',
       flex: "1 1 200px",
     },
     [theme.breakpoints.down("md")]: {
-      // maxWidth: '960px',
       flex: "1 1 150px",
     },
     [theme.breakpoints.down("sm")]: {
-      // maxWidth: '600px',
       flex: "1 1 80px",
-      // backgroundColor: 'purple',
     },
-    // ' & #grid': {
-    //   display: 'grid',
-    //   placeItems: 'center',
-    // },
   },
   root: {
     width: "100%",
@@ -144,9 +112,6 @@ const useStyles = makeStyles((theme) => ({
     flexWrap: "wrap",
     justifyContent: "center",
     marginBottom: theme.spacing(1),
-    // display: 'grid',
-    // placeItems: 'center',
-    // gridTemplateColumns: 'repeat(5, 1fr)',
   },
   textSize: {
     [theme.breakpoints.up("md")]: {
@@ -155,17 +120,12 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down("md")]: {
       fontSize: "1rem",
     },
-    // [theme.breakpoints.down('sm')]: {
-    //   fontSize: '.25rem',
-    //   // backgroundColor: 'purple',
-    // },
   },
   buttonsWrapper: {
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-evenly",
     width: "100%",
-    // paddingLeft: theme.spacing(2),
   },
   teste: {
     display: "grid",
@@ -209,8 +169,6 @@ export function TextMaskCustom(props) {
         /\d/,
         /\d/,
       ]}
-      // placeholderChar={'\u2000'}
-      // showMask
     />
   );
 }
@@ -300,17 +258,14 @@ function AdminProfile({ loggedIn, data, revalidate, dados }) {
     }
   };
 
-  // console.log(formData.cpf.length);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // console.log("passou");
+
     const newCpf = formData.cpf.replace(/[^0-9]/g, "");
     fetch(`${server}/api/user`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
-        // 'Access-Control-Allow-Headers': '*',
       },
       body: JSON.stringify({
         userId: formData.userId,
@@ -331,11 +286,6 @@ function AdminProfile({ loggedIn, data, revalidate, dados }) {
         if (data && !data.error && data.message) {
           setPatchSucces(data.message);
         }
-        // if (data && data.token) {
-        //   //Set cookie
-        //   cookie.set('token', data.token, { expires: 2 });
-        //   Router.push('/');
-        // }
       });
     ref.current.value = "";
     setFormData({
@@ -350,12 +300,11 @@ function AdminProfile({ loggedIn, data, revalidate, dados }) {
 
   const handleDelete = async (e) => {
     e.preventDefault();
-    // console.log("passou delete");
+
     fetch(`${server}/api/user`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
-        // 'Access-Control-Allow-Headers': '*',
       },
       body: JSON.stringify({
         userId: formData.userId,
@@ -371,11 +320,6 @@ function AdminProfile({ loggedIn, data, revalidate, dados }) {
         if (data && !data.error && data.message) {
           setPatchSucces(data.message);
         }
-        // if (data && data.token) {
-        //   //Set cookie
-        //   cookie.set('token', data.token, { expires: 2 });
-        //   Router.push('/');
-        // }
       });
     ref.current.value = "";
     setFormData({
@@ -390,7 +334,7 @@ function AdminProfile({ loggedIn, data, revalidate, dados }) {
 
   const handleCancel = (e) => {
     e.preventDefault();
-    // console.log("cancelado com succeso");
+
     ref.current.value = "";
     setErrorText({ ...errorText, userId: false, textUserId: "" });
     setFormData({
@@ -422,8 +366,6 @@ function AdminProfile({ loggedIn, data, revalidate, dados }) {
               required
               error={errorText.userId}
               helperText={errorText.textUserId}
-              // value={formData.userId}
-              // onChange={(e) => setFormData({ userId: e.target.value })}
               onBlur={(e) => userIdCheck(e)}
             />
           </FormControl>
@@ -463,8 +405,7 @@ function AdminProfile({ loggedIn, data, revalidate, dados }) {
               InputProps={{
                 inputComponent: TextMaskCustom,
                 value: formData.cpf,
-                // value: this.state.textmask,
-                // onChange: this.handleChange('textmask'),
+
                 onBlur: (e) => errorCheck(e.target.value),
                 onChange: (e) =>
                   setFormData((prevState) => ({
@@ -475,7 +416,6 @@ function AdminProfile({ loggedIn, data, revalidate, dados }) {
               required
               error={errorText.cpf}
               helperText={errorText.textCpf}
-              // }
             />
           </FormControl>
           <FormControl component="fieldset" className={classes.inputComponent}>
@@ -499,11 +439,9 @@ function AdminProfile({ loggedIn, data, revalidate, dados }) {
             <FormControl
               component="fieldset"
               className={classes.inputComponent}
-              // id="grid"
             >
               <RadioGroup
                 row
-                // className={classes.radioButton}
                 aria-label="position"
                 name="position"
                 value={formData.active}
@@ -540,12 +478,7 @@ function AdminProfile({ loggedIn, data, revalidate, dados }) {
               <Button variant="contained" onClick={(e) => handleCancel(e)}>
                 Cancelar
               </Button>
-              <Button
-                type="submit"
-                variant="contained"
-                color="primary"
-                // disabled={formData.userId ? false : true}
-              >
+              <Button type="submit" variant="contained" color="primary">
                 Enviar
               </Button>
             </div>

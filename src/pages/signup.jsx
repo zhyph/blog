@@ -1,9 +1,7 @@
-import React, { useRef, useState } from "react";
-import { NextPage } from "next";
+import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import cookie from "js-cookie";
-import FileBase64 from "react-file-base64";
 import imageCompression from "browser-image-compression";
 import { server } from "../config";
 import Nav from "../components/Nav";
@@ -11,9 +9,6 @@ import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
-// import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
@@ -41,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.secondary.main,
   },
   form: {
-    width: "100%", // Fix IE 11 issue.
+    width: "100%",
     marginTop: theme.spacing(3),
   },
   submit: {
@@ -54,7 +49,7 @@ function SignUp() {
   const classes = useStyles();
   const Router = useRouter();
   const [dataUri, setDataUri] = useState("");
-  // const [files, setFiles] = useState([]);
+
   const [base, setbase] = useState();
   const [imageStates, setImageStates] = useState({
     maxSizeMB: 1,
@@ -115,7 +110,6 @@ function SignUp() {
         type: "1",
         active: "1",
         base64: base,
-        // profilePictureRef.current.files[0],
       }),
     })
       .then((r) => r.json())
@@ -125,18 +119,15 @@ function SignUp() {
           setOpen({ fail: true });
         }
         if (data && data.token) {
-          //Set cookie
           cookie.set("token", data.token, { expires: 2 });
           Router.push("/");
         }
       });
   };
 
- 
-
   const compressImage = async (e, useWebWorker) => {
     const file = e.target.files[0];
-    
+
     const targetName = useWebWorker ? "webWorker" : "mainThread";
     setImageStates((prevState) => ({
       ...prevState,
@@ -150,14 +141,12 @@ function SignUp() {
       maxSizeMB: imageStates.maxSizeMB,
       maxWidthOrHeight: imageStates.maxWidthOrHeight,
       useWebWorker,
-      // onProgress: (p) => onProgress(p, useWebWorker),
     };
     const output = await imageCompression(file, options);
-    // console.log("output", output);
+
     var reader = new FileReader();
     reader.readAsDataURL(output);
     reader.onload = function () {
-      // console.log(reader.result);
       setbase(reader.result);
     };
     reader.onerror = function (error) {
@@ -181,9 +170,6 @@ function SignUp() {
 
     setOpen(false);
   };
-
-  // const version = imageCompression.version;
-  // const { webWorker, mainThread, maxSizeMB, maxWidthOrHeight } = imageStates;
 
   const handleCheck = (e) => {
     const target = e.target.name;
@@ -241,7 +227,6 @@ function SignUp() {
                   type="email"
                   autoFocus
                   onChange={(e) => setEmail(e.target.value)}
-                  // autoComplete="email"
                 />
               </Grid>
               <Grid item xs={12}>
@@ -299,7 +284,6 @@ function SignUp() {
                   />
                 </Button>
               </Grid>
-             
             </Grid>
             <Button
               type="submit"
@@ -312,13 +296,11 @@ function SignUp() {
             </Button>
             <Grid container justify="flex-end">
               <Grid item>
-              
                 <Link href="/login" passHref>
                   <Button component="a" variant="text">
                     Já tem uma conta? Entre por aqui.
                   </Button>
                 </Link>
-              
               </Grid>
             </Grid>
           </form>

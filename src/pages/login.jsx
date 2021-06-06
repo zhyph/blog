@@ -1,16 +1,12 @@
 import React, { useState } from "react";
 import Router from "next/router";
 import cookie from "js-cookie";
-import { NextPage } from "next";
 import { server } from "../config/index";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
 import Grid from "@material-ui/core/Grid";
-import Box from "@material-ui/core/Box";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
@@ -33,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.secondary.main,
   },
   form: {
-    width: "100%", // Fix IE 11 issue.
+    width: "100%",
     marginTop: theme.spacing(1),
   },
   submit: {
@@ -53,7 +49,7 @@ const Login = () => {
 
   function handleSubmit(e) {
     e.preventDefault();
-    //call api
+
     setOpen({ ...open, success: true });
     fetch(`${server}/api/auth`, {
       method: "POST",
@@ -74,7 +70,6 @@ const Login = () => {
           setOpen({ ...open, fail: true });
         }
         if (data && data.token) {
-          //set cookie
           cookie.set("token", data.token, { expires: 2 });
           Router.push("/");
         }
@@ -117,7 +112,6 @@ const Login = () => {
               type="email"
               autoFocus
               onChange={(e) => setEmail(e.target.value)}
-              // autoComplete="email"
             />
             <TextField
               variant="outlined"
@@ -149,7 +143,6 @@ const Login = () => {
               </Grid>
             </Grid>
           </form>
-          
         </div>
         <Snackbar
           open={open.success}

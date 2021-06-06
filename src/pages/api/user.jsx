@@ -1,6 +1,3 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-
-import { NextApiRequest, NextApiResponse } from "next";
 import connect from "../../utils/database";
 import assert from "assert";
 import bcrypt from "bcrypt";
@@ -28,7 +25,6 @@ function createUser(
 ) {
   const collection = db.collection("users");
   bcrypt.hash(password, saltRounds, function (err, hash) {
-    // Store hash in your password DB.
     collection.insertOne(
       {
         userId: v4(),
@@ -79,7 +75,6 @@ export default async (req, res) => {
       return;
     }
 
-    //Verify email does not exist already
     const { db } = await connect();
 
     const { email, password, type, cpf, name, active, base64 } = req.body;
@@ -90,7 +85,6 @@ export default async (req, res) => {
         return;
       }
       if (!user) {
-        // proceed to Create
         createUser(
           db,
           email,
@@ -100,14 +94,14 @@ export default async (req, res) => {
           type,
           active,
           base64,
-          // imageBase64,
+
           (creationResult) => {
             if (creationResult.ops.length === 1) {
               const user = creationResult.ops[0];
               const token = jwt.sign(
                 { userId: user.userId, email: user.email },
                 jwtSecret,
-                { expiresIn: 60 * 60 } //60 minutes
+                { expiresIn: 60 * 60 }
               );
               res.status(200).json({ token });
               return;
@@ -115,7 +109,6 @@ export default async (req, res) => {
           }
         );
       } else {
-        //User Exists
         res.status(403).json({ error: true, message: "Email exists" });
         return;
       }
@@ -127,8 +120,6 @@ export default async (req, res) => {
       !req.body.name ||
       !req.body.email ||
       !req.body.cpf
-      // !req.body.type ||
-      // !req.body.active
     ) {
       res
         .status(400)
@@ -206,8 +197,4 @@ export default async (req, res) => {
       }
     });
   }
-  // else {
-  //   res.status(400).json({ error: true, message: 'Wrong Method' });
-  //   return;
-  // }
 };
