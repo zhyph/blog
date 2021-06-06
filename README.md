@@ -155,3 +155,5 @@ Que faz um fetch no endpoint user e retorna todos users em array, podendo assim 
 Basicamente o código retorna uma verificação do token feita pela lib jwt.verify que compara o token com um "segredo" que esta guardado no .env.local ``const jwtSecret = process.env.JWT_SECRET;``.
 * É possivel ver que comecei utilizando tsx e tailwindcss porém decidi mudar para o normal jsx e materialui, pois os outros dois eram um pouco recentes para mim então acabei optando por algo mais familiar
 * O projeto utiliza SSR para dar fetch nas informações dos usuarios, porém mais tarde no código percebi que tinha sido uma má ideia, e utilizar context api sera algo melhor, por varios motivos, a unica razão de código continuar com SSR foi o tempo.
+
+Qualquer dúvida ou interesse, estou disponivel no whatsapp ou pelo meu [email](mailto:artur.almeida1@outlook.com). Muito Obrigado!
