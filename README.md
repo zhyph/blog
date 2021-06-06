@@ -133,3 +133,25 @@ export const getServerSideProps = async (ctx) => {
 Que faz um fetch no endpoint user e retorna todos users em array, podendo assim fazer a tabela desmonstrada no dashboard do admin
 
 ![Get user](https://user-images.githubusercontent.com/68618179/120934090-51efc800-c6d3-11eb-8f89-b79e6195f004.png)
+
+
+### Considerações finais
+
+* Na pasta api tem um arquivo chamado ``/me.tsx``, oque ele faz é basicamente revalidar se o user esta ou não com o token valido, ele é chamado em toda pagina da aplicação 
+```
+  const { data, revalidate } = useSWR(
+    `${server}/api/me`,
+    async function (args) {
+      const res = await fetch(args);
+      return res.json();
+    }
+  );
+  if (!data) return <h1>Loading...</h1>;
+  let loggedIn = false;
+  if (data.email) {
+    loggedIn = true;
+  }
+```
+Basicamente o código retorna uma verificação do token feita pela lib jwt.verify que compara o token com um "segredo" que esta guardado no .env.local ``const jwtSecret = process.env.JWT_SECRET;``.
+* É possivel ver que comecei utilizando tsx e tailwindcss porém decidi mudar para o normal jsx e materialui, pois os outros dois eram um pouco recentes para mim então acabei optando por algo mais familiar
+* O projeto utiliza SSR para dar fetch nas informações dos usuarios, porém mais tarde no código percebi que tinha sido uma má ideia, e utilizar context api sera algo melhor, por varios motivos, a unica razão de código continuar com SSR foi o tempo.
