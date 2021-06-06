@@ -1,6 +1,6 @@
 # Projeto "Blog" feito com NextJS + MaterialUI e MongoDB
 
-Antes de qualquer coisa você pode acessar o website por ![aqui](https://blog-zhyph.vercel.app/), ele esta sendo hosteado pela vercel.
+Antes de qualquer coisa você pode acessar o website por ![aqui](https://blog-zhyph.vercel.app), ele esta sendo hosteado pela vercel.
 
 ## Breve descrição
 
@@ -109,7 +109,7 @@ Este código é bem mais direto que os outros dois, ele apenas faz uma verifica�
 
 ###### Mais a fundo
 
-O administrador é o mais complexo desta seção, eu vou poupar espaço do frontend e focar nas funções da api porém o código esta ![aqui](https://github.com/zhyph/blog-fullstack/blob/main/src/components/AdminProfile.jsx) sendo apenas algumas funções fazendo patch, delete e recebendo todos dados dos usuarios por props.
+O administrador é o mais complexo desta seção, eu vou poupar espaço do frontend e focar nas funções da api porém o código esta ![aqui](https://github.com/zhyph/blog/blob/main/src/components/AdminProfile.jsx) sendo apenas algumas funções fazendo patch, delete e recebendo todos dados dos usuarios por props.
 
 A função de ```handleSubmit()``` que tera seu trigger quando o form for preenchido e enviado, esta função enviara todos os dados do user para o endpoint ``api/user`` como meotodo PATCH que ira rodar o mesmo processo da atualização de perfil do usuario comum, porém agora adicionando mais informações e tendo mais "poder".
 
