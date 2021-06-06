@@ -127,7 +127,8 @@ export const getServerSideProps = async (ctx) => {
       dados: await res.json(),
     },
   };
-};`` 
+};
+``
 
 Que faz um fetch no endpoint user e retorna todos users em array, podendo assim fazer a tabela desmonstrada no dashboard do admin
 
