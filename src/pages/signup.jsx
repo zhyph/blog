@@ -97,28 +97,6 @@ function SignUp() {
     name
   );
 
-  //   const getBase64 = (file) => {
-  //     return new Promise((resolve, reject) => {
-  //       const reader = new FileReader();
-  //       reader.onload = () => resolve(reader.result);
-  //       reader.onerror = (error) => reject(error);
-  //       reader.readAsDataURL(file);
-  //     });
-  //   };
-
-  //   const imageUpload = (e) => {
-  //     const file = e.target.files[0];
-  //     getBase64(file).then((base64) => {
-  //       // localStorage['fileBase64'] = base64;
-  //       setDataUri(base64);
-  //       console.debug('file stored', base64);
-  //     });
-  //   };
-
-  // const getFiles = (files) => {
-  //   setFiles(files);
-  // };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     const newCpf = cpf.replace(/[^0-9]/g, "");
@@ -154,24 +132,11 @@ function SignUp() {
       });
   };
 
-  // const onProgress = (p, useWebWorker) => {
-  //   const targetName = useWebWorker ? "webWorker" : "mainThread";
-  //   setImageStates((prevState) => ({
-  //     ...prevState,
-  //     [targetName]: {
-  //       ...prevState[targetName],
-  //       progress: p,
-  //     },
-  //   }));
-  // };
+ 
 
   const compressImage = async (e, useWebWorker) => {
     const file = e.target.files[0];
-    // console.log("input", file);
-    // console.log(
-    //   "ExifOrientation",
-    //   await imageCompression.getExifOrientation(file)
-    // );
+    
     const targetName = useWebWorker ? "webWorker" : "mainThread";
     setImageStates((prevState) => ({
       ...prevState,
@@ -334,13 +299,7 @@ function SignUp() {
                   />
                 </Button>
               </Grid>
-              {/* <Grid item xs={6}>
-                <Box
-                  component="img"
-                  src={imageStates.webWorker.outputUrl}
-                  width="200px"
-                />
-              </Grid> */}
+             
             </Grid>
             <Button
               type="submit"
@@ -353,13 +312,13 @@ function SignUp() {
             </Button>
             <Grid container justify="flex-end">
               <Grid item>
-                {/* <NextLink href="/login" passHref> */}
+              
                 <Link href="/login" passHref>
                   <Button component="a" variant="text">
                     Já tem uma conta? Entre por aqui.
                   </Button>
                 </Link>
-                {/* </NextLink> */}
+              
               </Grid>
             </Grid>
           </form>
