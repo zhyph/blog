@@ -118,7 +118,7 @@ Metodo delete
 E por ultimo do endpoint user o DELETE, que ira checar por um userId apenas, e se algum usuario retornar desta busca ele ira deleta-lo pelo userId, retornando uma mensagem de sucesso.
 
 Todos dados dos usuario são pegos fazendo um GET utilizando getServerSideProps:
-``
+```
 export const getServerSideProps = async (ctx) => {
   const res = await fetch(`${server}/api/user`);
 
@@ -128,7 +128,7 @@ export const getServerSideProps = async (ctx) => {
     },
   };
 };
-``
+```
 
 Que faz um fetch no endpoint user e retorna todos users em array, podendo assim fazer a tabela desmonstrada no dashboard do admin
 
