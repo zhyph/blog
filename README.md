@@ -1,6 +1,6 @@
 # Projeto "Blog" feito com NextJS + MaterialUI e MongoDB
 
-Antes de qualquer coisa você pode acessar o website por ![aqui](https://blog-zhyph.vercel.app), ele esta sendo hosteado pela vercel.
+Antes de qualquer coisa você pode acessar o ![website](https://blog-zhyph.vercel.app), ele esta sendo hosteado pela vercel.
 
 ## Breve descrição
 
