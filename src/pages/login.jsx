@@ -149,33 +149,7 @@ const Login = () => {
               </Grid>
             </Grid>
           </form>
-          {/* <form onSubmit={handleSubmit}>
-          <p>Login</p>
-          <br />
-          <label htmlFor="email">
-            <h2>Email</h2>
-            <input
-              name="email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </label>
-          <br />
-          <label htmlFor="password">
-            <h2>Senha</h2>
-            <input
-              name="password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </label>
-          <br />
-
-          <input type="submit" value="Submit" />
-          {loginError && <p style={{ color: "red" }}>{loginError}</p>}
-        </form> */}
+          
         </div>
         <Snackbar
           open={open.success}
