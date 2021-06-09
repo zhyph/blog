@@ -130,7 +130,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Nav({ base64Img, loggedIn, data, revalidate }) {
+export default function Nav({ dados, loggedIn, data, revalidate }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [newData, setNewData] = useState();
   const classes = useStyles();
@@ -145,7 +145,7 @@ export default function Nav({ base64Img, loggedIn, data, revalidate }) {
   };
 
   const useFilter = () => {
-    const base64Array = base64Img?.map((item) => {
+    const base64Array = dados?.map((item) => {
       if (data.userId === item.userId) {
         return item;
       }
@@ -160,6 +160,8 @@ export default function Nav({ base64Img, loggedIn, data, revalidate }) {
   useEffect(() => {
     setNewData(useFilter());
   }, [loggedIn]);
+
+  // console.log(newData?.base64);
 
   return (
     <Box

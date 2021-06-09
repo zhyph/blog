@@ -25,6 +25,7 @@ import Paper from "@material-ui/core/Paper";
 import MaskedInput from "react-text-mask";
 import { Alert } from "@material-ui/lab";
 import { server } from "../config";
+import Nav from "./Nav";
 
 const useStyles = makeStyles((theme) => ({
   body: {
@@ -68,16 +69,18 @@ const useStyles = makeStyles((theme) => ({
   },
   loggedInBox: {
     backgroundColor: "white",
-    height: "90%",
+    height: "100%",
     width: "100%",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    flexDirection: "column",
-    marginTop: theme.spacing(3),
-    [theme.breakpoints.down("md")]: {
-      height: "100%",
-    },
+    display: "grid",
+    // alignItems: "center",
+    // justifyContent: "center",
+    // flexDirection: "column",
+    placeItems: "center",
+    // marginTop: theme.spacing(3),
+    gridTemplateRows: "auto 1fr",
+    // [theme.breakpoints.down("md")]: {
+    //   height: "100%",
+    // },
   },
   normalUserLoggedInBox: {
     backgroundColor: "white",
@@ -141,6 +144,10 @@ const useStyles = makeStyles((theme) => ({
   buttonError: { backgroundColor: "red" },
   profilePicture: {
     borderRadius: "100%",
+  },
+  newBox: {
+    display: "grid",
+    placeItems: "center",
   },
 }));
 
@@ -348,190 +355,213 @@ function AdminProfile({ loggedIn, data, revalidate, dados }) {
   };
 
   return (
-    <Container className={classes.loggedInBox}>
-      <Box className={classes.loggedFormBox}>
-        <Typography variant="h6" className={classes.textSize}>
-          Copie e cole o userId para editar/excluir um usuario
-        </Typography>
-        <form
-          className={classes.root}
-          onSubmit={(e) => handleSubmit(e)}
-          autoComplete="off"
-        >
-          <FormControl component="fieldset" className={classes.inputComponent}>
-            <TextField
-              label="UserID"
-              variant="filled"
-              inputRef={ref}
-              required
-              error={errorText.userId}
-              helperText={errorText.textUserId}
-              onBlur={(e) => userIdCheck(e)}
-            />
-          </FormControl>
-          <FormControl component="fieldset" className={classes.inputComponent}>
-            <TextField
-              label="Nome"
-              variant="filled"
-              value={formData.name}
-              required
-              onChange={(e) =>
-                setFormData((prevState) => ({
-                  ...prevState,
-                  name: e.target.value,
-                }))
-              }
-            />
-          </FormControl>
-          <FormControl component="fieldset" className={classes.inputComponent}>
-            <TextField
-              label="Email"
-              type="email"
-              required
-              variant="filled"
-              value={formData.email}
-              onChange={(e) =>
-                setFormData((prevState) => ({
-                  ...prevState,
-                  email: e.target.value,
-                }))
-              }
-            />
-          </FormControl>
-          <FormControl component="fieldset" className={classes.inputComponent}>
-            <TextField
-              label="CPF"
-              variant="filled"
-              InputProps={{
-                inputComponent: TextMaskCustom,
-                value: formData.cpf,
-
-                onBlur: (e) => errorCheck(e.target.value),
-                onChange: (e) =>
-                  setFormData((prevState) => ({
-                    ...prevState,
-                    cpf: e.target.value,
-                  })),
-              }}
-              required
-              error={errorText.cpf}
-              helperText={errorText.textCpf}
-            />
-          </FormControl>
-          <FormControl component="fieldset" className={classes.inputComponent}>
-            <InputLabel id="demo-simple-select-label">Nivel</InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={formData.type}
-              onChange={(e) =>
-                setFormData((prevState) => ({
-                  ...prevState,
-                  type: e.target.value,
-                }))
-              }
-            >
-              <MenuItem value={"1"}>Usuario Comum</MenuItem>
-              <MenuItem value={"999"}>Admin</MenuItem>
-            </Select>
-          </FormControl>
-          <div className={classes.teste}>
+    <Box className={classes.loggedInBox}>
+      <Nav
+        loggedIn={loggedIn}
+        data={data}
+        revalidate={revalidate}
+        dados={dados}
+      />
+      <Box className={classes.newBox}>
+        <Box className={classes.loggedFormBox}>
+          <Typography variant="h6" className={classes.textSize}>
+            Copie e cole o userId para editar/excluir um usuario
+          </Typography>
+          <form
+            className={classes.root}
+            onSubmit={(e) => handleSubmit(e)}
+            autoComplete="off"
+          >
             <FormControl
               component="fieldset"
               className={classes.inputComponent}
             >
-              <RadioGroup
-                row
-                aria-label="position"
-                name="position"
-                value={formData.active}
+              <TextField
+                label="UserID"
+                variant="filled"
+                inputRef={ref}
+                required
+                error={errorText.userId}
+                helperText={errorText.textUserId}
+                onBlur={(e) => userIdCheck(e)}
+              />
+            </FormControl>
+            <FormControl
+              component="fieldset"
+              className={classes.inputComponent}
+            >
+              <TextField
+                label="Nome"
+                variant="filled"
+                value={formData.name}
+                required
                 onChange={(e) =>
                   setFormData((prevState) => ({
                     ...prevState,
-                    active: e.target.value,
+                    name: e.target.value,
+                  }))
+                }
+              />
+            </FormControl>
+            <FormControl
+              component="fieldset"
+              className={classes.inputComponent}
+            >
+              <TextField
+                label="Email"
+                type="email"
+                required
+                variant="filled"
+                value={formData.email}
+                onChange={(e) =>
+                  setFormData((prevState) => ({
+                    ...prevState,
+                    email: e.target.value,
+                  }))
+                }
+              />
+            </FormControl>
+            <FormControl
+              component="fieldset"
+              className={classes.inputComponent}
+            >
+              <TextField
+                label="CPF"
+                variant="filled"
+                InputProps={{
+                  inputComponent: TextMaskCustom,
+                  value: formData.cpf,
+
+                  onBlur: (e) => errorCheck(e.target.value),
+                  onChange: (e) =>
+                    setFormData((prevState) => ({
+                      ...prevState,
+                      cpf: e.target.value,
+                    })),
+                }}
+                required
+                error={errorText.cpf}
+                helperText={errorText.textCpf}
+              />
+            </FormControl>
+            <FormControl
+              component="fieldset"
+              className={classes.inputComponent}
+            >
+              <InputLabel id="demo-simple-select-label">Nivel</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={formData.type}
+                onChange={(e) =>
+                  setFormData((prevState) => ({
+                    ...prevState,
+                    type: e.target.value,
                   }))
                 }
               >
-                <FormControlLabel
-                  value="1"
-                  control={<Radio color="primary" />}
-                  label="Ativado"
-                  labelPlacement="start"
-                />
-                <FormControlLabel
-                  value="0"
-                  control={<Radio color="primary" />}
-                  label="Desativado"
-                  labelPlacement="start"
-                />
-              </RadioGroup>
+                <MenuItem value={"1"}>Usuario Comum</MenuItem>
+                <MenuItem value={"999"}>Admin</MenuItem>
+              </Select>
             </FormControl>
-            <div className={classes.buttonsWrapper}>
-              <Button
-                type="submit"
-                variant="contained"
-                className={classes.buttonError}
-                onClick={(e) => handleDelete(e)}
+            <div className={classes.teste}>
+              <FormControl
+                component="fieldset"
+                className={classes.inputComponent}
               >
-                Deletar
-              </Button>
-              <Button variant="contained" onClick={(e) => handleCancel(e)}>
-                Cancelar
-              </Button>
-              <Button type="submit" variant="contained" color="primary">
-                Enviar
-              </Button>
+                <RadioGroup
+                  row
+                  aria-label="position"
+                  name="position"
+                  value={formData.active}
+                  onChange={(e) =>
+                    setFormData((prevState) => ({
+                      ...prevState,
+                      active: e.target.value,
+                    }))
+                  }
+                >
+                  <FormControlLabel
+                    value="1"
+                    control={<Radio color="primary" />}
+                    label="Ativado"
+                    labelPlacement="start"
+                  />
+                  <FormControlLabel
+                    value="0"
+                    control={<Radio color="primary" />}
+                    label="Desativado"
+                    labelPlacement="start"
+                  />
+                </RadioGroup>
+              </FormControl>
+              <div className={classes.buttonsWrapper}>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  className={classes.buttonError}
+                  onClick={(e) => handleDelete(e)}
+                >
+                  Deletar
+                </Button>
+                <Button variant="contained" onClick={(e) => handleCancel(e)}>
+                  Cancelar
+                </Button>
+                <Button type="submit" variant="contained" color="primary">
+                  Enviar
+                </Button>
+              </div>
             </div>
-          </div>
-        </form>
-        {patchSuccess && (
-          <Alert className={classes.alertMargin} severity="success">
-            {patchSuccess}
-          </Alert>
-        )}
-        {patchError && (
-          <Alert className={classes.alertMargin} severity="error">
-            {patchError}
-          </Alert>
-        )}
-      </Box>
-      <Box className={classes.loggedInContainer}>
-        <TableContainer component={Paper}>
-          <Table
-            className={classes.table}
-            size="small"
-            aria-label="a dense table"
-          >
-            <TableHead>
-              <TableRow>
-                <TableCell>UserID</TableCell>
-                <TableCell align="right">Nome</TableCell>
-                <TableCell align="right">Email</TableCell>
-                <TableCell align="right">CPF</TableCell>
-                <TableCell align="right">Nivel de Acesso</TableCell>
-                <TableCell align="right">Ativo</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {dados?.map((row) => (
-                <TableRow key={row.userId}>
-                  <TableCell component="th" scope="row">
-                    {row.userId}
-                  </TableCell>
-                  <TableCell align="right">{row.name}</TableCell>
-                  <TableCell align="right">{row.email}</TableCell>
-                  <TableCell align="right">{row.cpf}</TableCell>
-                  <TableCell align="right">{row.type}</TableCell>
-                  <TableCell align="right">
-                    {row.active === "1" ? "Ativo" : "Desativado"}
-                  </TableCell>
+          </form>
+          {patchSuccess && (
+            <Alert className={classes.alertMargin} severity="success">
+              {patchSuccess}
+            </Alert>
+          )}
+          {patchError && (
+            <Alert className={classes.alertMargin} severity="error">
+              {patchError}
+            </Alert>
+          )}
+        </Box>
+        <Box className={classes.loggedInContainer}>
+          <TableContainer component={Paper}>
+            <Table
+              className={classes.table}
+              size="small"
+              aria-label="a dense table"
+            >
+              <TableHead>
+                <TableRow>
+                  <TableCell>UserID</TableCell>
+                  <TableCell align="right">Nome</TableCell>
+                  <TableCell align="right">Email</TableCell>
+                  <TableCell align="right">CPF</TableCell>
+                  <TableCell align="right">Nivel de Acesso</TableCell>
+                  <TableCell align="right">Ativo</TableCell>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+              </TableHead>
+              <TableBody>
+                {dados?.map((row) => (
+                  <TableRow key={row.userId}>
+                    <TableCell component="th" scope="row">
+                      {row.userId}
+                    </TableCell>
+                    <TableCell align="right">{row.name}</TableCell>
+                    <TableCell align="right">{row.email}</TableCell>
+                    <TableCell align="right">{row.cpf}</TableCell>
+                    <TableCell align="right">{row.type}</TableCell>
+                    <TableCell align="right">
+                      {row.active === "1" ? "Ativo" : "Desativado"}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Box>
       </Box>
-    </Container>
+    </Box>
   );
 }
 

@@ -1,5 +1,6 @@
 import { Box, Container, makeStyles, Typography } from "@material-ui/core";
 import React from "react";
+import Nav from "./Nav";
 
 const useStyles = makeStyles((theme) => ({
   body: {
@@ -22,10 +23,11 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   notLoggedInBox: {
-    height: "90vh",
+    height: "100%",
     width: "100%",
     display: "grid",
     placeItems: "center",
+    gridTemplateRows: "auto 1fr",
   },
   notLoggedInText: {
     [theme.breakpoints.down("md")]: {
@@ -37,11 +39,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function NotLogged() {
+function NotLogged({ loggedIn, data, revalidate, dados }) {
   const classes = useStyles();
 
   return (
     <Box className={classes.notLoggedInBox}>
+      <Nav
+        loggedIn={loggedIn}
+        data={data}
+        revalidate={revalidate}
+        base64Img={dados}
+      />
       <Container maxWidth="md" className={classes.notLoggedInContainer}>
         <Typography
           variant="h3"

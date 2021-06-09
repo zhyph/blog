@@ -13,6 +13,7 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { Snackbar } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
+import Nav from "./Nav";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -20,6 +21,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
+    marginTop: "5%",
     [theme.breakpoints.down("xs")]: {
       flexDirection: "column",
     },
@@ -150,11 +152,17 @@ const useStyles = makeStyles((theme) => ({
   componentMain: {
     display: "grid",
     placeItems: "center",
-    maxHeight: "600px",
+    // maxHeight: "600px",
     height: "100%",
+    // backgroundColor: "white",
+    // borderRadius: "1rem",
+    // marginTop: "10%",
+    gridTemplateRows: "auto 1fr",
+  },
+  newBox: {
     backgroundColor: "white",
-    borderRadius: "1rem",
-    marginTop: "10%",
+    borderRadius: "1em",
+    padding: "2em",
   },
 }));
 
@@ -187,7 +195,7 @@ function TextMaskCustom(props) {
   );
 }
 
-function NewComponent({ dados, data, revalidate }) {
+function NewComponent({ dados, data, revalidate, loggedIn }) {
   const classes = useStyles();
   const [controle, tas] = useState();
   const [patchError, setPatchError] = useState();
@@ -210,7 +218,7 @@ function NewComponent({ dados, data, revalidate }) {
       return;
     }
   }, [controle]);
-  console.log(formData ? formData : "");
+  // console.log(formData ? formData : "");
 
   const finalBase64Src = () => {
     const base64Array = dados?.map((item) => {
@@ -292,121 +300,135 @@ function NewComponent({ dados, data, revalidate }) {
   };
 
   return (
-    <Container component="main" className={classes.componentMain}>
-      <CssBaseline />
-      <Box display="flex" justifyContent="center">
-        <Typography component="h1" variant="h3">
-          SEU PERFIL
-        </Typography>
-      </Box>
-      <div className={classes.paper}>
-        <Box
-          component="img"
-          className={classes.profilePicture}
-          src={
-            finalBase64Src()?.base64 ? finalBase64Src().base64 : "/default.png"
-          }
-          width="50%"
-        />
-        <form onSubmit={handleSubmit} className={classes.form}>
-          <Grid container justify="center" spacing={2}>
-            <Grid item xs={6}>
-              <TextField
-                InputLabelProps={{ shrink: true }}
-                value={formData.email}
-                variant="filled"
-                required
-                fullWidth
-                disabled={edit}
-                id="email"
-                label="Email"
-                name="email"
-                type="email"
-                onChange={(e) => handleChange(e)}
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <TextField
-                InputLabelProps={{ shrink: true }}
-                value={formData.name}
-                disabled={edit}
-                variant="filled"
-                required
-                fullWidth
-                onChange={(e) => handleChange(e)}
-                name="name"
-                label="Nome"
-                type="name"
-                id="name"
-                autoComplete="name"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                InputLabelProps={{ shrink: true }}
-                disabled={edit}
-                variant="filled"
-                required
-                fullWidth
-                name="cpf"
-                label="CPF"
-                type="cpf"
-                id="cpf"
-                error={errorText ? true : false}
-                helperText={errorText}
-                autoComplete="cpf"
-                InputProps={{
-                  inputComponent: TextMaskCustom,
-                  value: formData.cpf,
-                  onChange: (e) => handleChange(e),
-                  onBlur: (e) => handleCheck(e),
-                }}
-              />
-            </Grid>
-            <Button
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-              onClick={() => setEdit(!edit)}
-            >
-              Editar
-            </Button>
-            {!edit && (
+    <Box component="main" className={classes.componentMain}>
+      <Nav
+        loggedIn={loggedIn}
+        data={data}
+        revalidate={revalidate}
+        dados={dados}
+      />
+      <Box className={classes.newBox}>
+        <CssBaseline />
+        <Box display="flex" justifyContent="center">
+          <Typography component="h1" variant="h3">
+            SEU PERFIL
+          </Typography>
+        </Box>
+        <div className={classes.paper}>
+          <Box
+            component="img"
+            className={classes.profilePicture}
+            src={
+              finalBase64Src()?.base64
+                ? finalBase64Src().base64
+                : "/default.png"
+            }
+            width="50%"
+          />
+          <form onSubmit={handleSubmit} className={classes.form}>
+            <Grid container justify="center" spacing={2}>
+              <Grid item xs={6}>
+                <TextField
+                  InputLabelProps={{ shrink: true }}
+                  value={formData.email}
+                  variant="filled"
+                  required
+                  fullWidth
+                  disabled={edit}
+                  id="email"
+                  label="Email"
+                  name="email"
+                  type="email"
+                  onChange={(e) => handleChange(e)}
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <TextField
+                  InputLabelProps={{ shrink: true }}
+                  value={formData.name}
+                  disabled={edit}
+                  variant="filled"
+                  required
+                  fullWidth
+                  onChange={(e) => handleChange(e)}
+                  name="name"
+                  label="Nome"
+                  type="name"
+                  id="name"
+                  autoComplete="name"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  InputLabelProps={{ shrink: true }}
+                  disabled={edit}
+                  variant="filled"
+                  required
+                  fullWidth
+                  name="cpf"
+                  label="CPF"
+                  type="cpf"
+                  id="cpf"
+                  error={errorText ? true : false}
+                  helperText={errorText}
+                  autoComplete="cpf"
+                  InputProps={{
+                    inputComponent: TextMaskCustom,
+                    value: formData.cpf,
+                    onChange: (e) => handleChange(e),
+                    onBlur: (e) => handleCheck(e),
+                  }}
+                />
+              </Grid>
               <Button
-                type="submit"
                 variant="contained"
                 color="primary"
                 className={classes.submit}
+                onClick={() => setEdit(!edit)}
               >
-                Atualizar
+                Editar
               </Button>
-            )}
-          </Grid>
-        </form>
-      </div>
-      <Snackbar
-        open={open.success}
-        autoHideDuration={4000}
-        onClose={handleClose}
-      >
-        <Alert
+              {!edit && (
+                <Button
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                  className={classes.submit}
+                >
+                  Atualizar
+                </Button>
+              )}
+            </Grid>
+          </form>
+        </div>
+        <Snackbar
+          open={open.success}
+          autoHideDuration={4000}
           onClose={handleClose}
-          className={classes.alertMargin}
-          severity="success"
         >
-          {patchSuccess}
-        </Alert>
-      </Snackbar>
-      <Snackbar open={open.fail} autoHideDuration={4000} onClose={handleClose}>
-        <Alert
+          <Alert
+            onClose={handleClose}
+            className={classes.alertMargin}
+            severity="success"
+          >
+            {patchSuccess}
+          </Alert>
+        </Snackbar>
+        <Snackbar
+          open={open.fail}
+          autoHideDuration={4000}
           onClose={handleClose}
-          className={classes.alertMargin}
-          severity="error"
         >
-          {patchError}
-        </Alert>
-      </Snackbar>
-    </Container>
+          <Alert
+            onClose={handleClose}
+            className={classes.alertMargin}
+            severity="error"
+          >
+            {patchError}
+          </Alert>
+        </Snackbar>
+      </Box>
+    </Box>
   );
 }
 

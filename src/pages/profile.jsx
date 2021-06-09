@@ -356,15 +356,30 @@ const profile = ({ dados }) => {
         <title>Perfil</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
-      <Nav
+      {/* <Nav
         loggedIn={loggedIn}
         data={data}
         revalidate={revalidate}
         base64Img={dados}
       >
         Perfil
-      </Nav>
-      {!loggedIn && <NotLogged />}
+      </Nav> */}
+      {finalBase64Src()?.active === "0" && (
+        <NotLogged
+          loggedIn={loggedIn}
+          data={data}
+          revalidate={revalidate}
+          dados={dados}
+        />
+      )}
+      {!loggedIn && (
+        <NotLogged
+          loggedIn={loggedIn}
+          data={data}
+          revalidate={revalidate}
+          dados={dados}
+        />
+      )}
       {loggedIn && finalBase64Src().type === "1" && (
         <UserProfile
           loggedIn={loggedIn}
