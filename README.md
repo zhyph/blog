@@ -1,5 +1,8 @@
 # Projeto "Blog" feito com NextJS + MaterialUI e MongoDB
 
+Antes de qualquer coisa você pode acessar o website, ele esta sendo hosteado pela vercel.
+https://blog-zhyph.vercel.app/
+
 ## Breve descrição
 
 Esse projeto foi feito para o Processo Seletivo da Mind Consulting e utiliza inteiramente NextJS, um framework do ReactJS.
@@ -107,7 +110,7 @@ Este código é bem mais direto que os outros dois, ele apenas faz uma verifica�
 
 ###### Mais a fundo
 
-O administrador é o mais complexo desta seção, eu vou poupar espaço do frontend e focar nas funções da api porém o código esta ![aqui](https://github.com/zhyph/blog-fullstack/blob/main/src/components/AdminProfile.jsx) sendo apenas algumas funções fazendo patch, delete e recebendo todos dados dos usuarios por props.
+O administrador é o mais complexo desta seção, eu vou poupar espaço do frontend e focar nas funções da api porém o código esta ![aqui](https://github.com/zhyph/blog/blob/main/src/components/AdminProfile.jsx) sendo apenas algumas funções fazendo patch, delete e recebendo todos dados dos usuarios por props.
 
 A função de ```handleSubmit()``` que tera seu trigger quando o form for preenchido e enviado, esta função enviara todos os dados do user para o endpoint ``api/user`` como meotodo PATCH que ira rodar o mesmo processo da atualização de perfil do usuario comum, porém agora adicionando mais informações e tendo mais "poder".
 
@@ -133,3 +136,27 @@ export const getServerSideProps = async (ctx) => {
 Que faz um fetch no endpoint user e retorna todos users em array, podendo assim fazer a tabela desmonstrada no dashboard do admin
 
 ![Get user](https://user-images.githubusercontent.com/68618179/120934090-51efc800-c6d3-11eb-8f89-b79e6195f004.png)
+
+
+### Considerações finais
+
+* Na pasta api tem um arquivo chamado ``/me.tsx``, oque ele faz é basicamente revalidar se o user esta ou não com o token valido, ele é chamado em toda pagina da aplicação 
+```
+  const { data, revalidate } = useSWR(
+    `${server}/api/me`,
+    async function (args) {
+      const res = await fetch(args);
+      return res.json();
+    }
+  );
+  if (!data) return <h1>Loading...</h1>;
+  let loggedIn = false;
+  if (data.email) {
+    loggedIn = true;
+  }
+```
+Basicamente o código retorna uma verificação do token feita pela lib jwt.verify que compara o token com um "segredo" que esta guardado no .env.local ``const jwtSecret = process.env.JWT_SECRET;``.
+* É possivel ver que comecei utilizando tsx e tailwindcss porém decidi mudar para o normal jsx e materialui, pois os outros dois eram um pouco recentes para mim então acabei optando por algo mais familiar
+* O projeto utiliza SSR para dar fetch nas informações dos usuarios, porém mais tarde no código percebi que tinha sido uma má ideia, e utilizar context api sera algo melhor, por varios motivos, a unica razão de código continuar com SSR foi o tempo.
+
+Qualquer dúvida ou interesse, estou disponivel no whatsapp ou pelo meu [email](mailto:artur.almeida1@outlook.com). Muito Obrigado!
